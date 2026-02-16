@@ -235,6 +235,53 @@ class TradingBot:
         return None  # Return None if no sell rule triggered
 
 
+    def execute_buy(self, amount_percentage: float, rule_key: str) -> bool:
+        """
+        Executes a buy order for a percentage of available BRL balance.
+        
+        :param amount_percentage: Percentage of balance to spend (0.10 = 10%)
+        :param rule_key: Rule identifier for duplicate prevention
+        :return: True if order placed successfully, False otherwise
+        """
+        
+        available_brl = self.account_manager.get_available_balance(self.config.FIAT)  # Get available BRL balance
+        
+        if available_brl <= 0:  # Verify if balance available
+            self.log(f"Insufficient BRL balance: {available_brl}")  # Log insufficient balance
+            return False  # Return failure
+        
+        cost = available_brl * amount_percentage  # Calculate cost to spend
+        
+        if cost < 10:  # Verify minimum order value
+            self.log(f"Order cost too low: {cost} BRL (minimum: 10 BRL)")  # Log low cost
+            return False  # Return failure
+        
+        account_id = self.account_manager.get_account_id()  # Get account ID
+        if not account_id:  # Verify if account ID available
+            self.log("Account ID not available")  # Log missing account ID
+            return False  # Return failure
+        
+        self.log(f"Executing BUY: {cost:.2f} BRL ({amount_percentage*100:.0f}% of balance)")  # Log buy action
+        
+        result = self.api_client.place_order(  # Place market buy order
+            account_id=account_id,  # Account ID
+            symbol=self.config.PRIMARY_SYMBOL,  # Trading pair
+            side="buy",  # Buy side
+            order_type="market",  # Market order type
+            cost=cost  # Cost in BRL
+        )
+        
+        if result:  # Verify if order placed successfully
+            order_id = result.get("orderId")  # Get order ID
+            self.log(f"Buy order placed successfully. Order ID: {order_id}")  # Log success
+            self.executed_rules.add(rule_key)  # Mark rule as executed
+            self.update_average_price()  # Update average price after buy
+            return True  # Return success
+        else:  # Order placement failed
+            self.log("Buy order failed")  # Log failure
+            return False  # Return failure
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
