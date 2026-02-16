@@ -53,9 +53,14 @@ import datetime  # For getting the current date and time
 import os  # For running a command in the terminal
 import platform  # For getting the operating system name
 import sys  # For system-specific parameters and functions
+from account import create_account_manager  # For account management
+from api_client import create_api_client  # For API communication
+from auth import create_authenticator  # For API authentication
 from colorama import Style  # For coloring the terminal
+from config import Config, validate_config, get_config_summary  # For configuration management
 from Logger import Logger  # For logging output to both terminal and file
 from pathlib import Path  # For handling file paths
+from trader import create_trading_bot  # For trading logic
 
 
 # Macros:
