@@ -113,6 +113,29 @@ def verbose_output(true_string="", false_string=""):
         print(false_string)  # Output the false statement string
 
 
+def display_account_balances(account_manager):
+    """
+    Retrieves and displays account balances.
+
+    :param account_manager: The account manager instance
+    :return: None
+    """
+
+    print(
+        f"{BackgroundColors.GREEN}Retrieving account balances...{Style.RESET_ALL}"
+    )  # Output balance retrieval message
+
+    balances = account_manager.get_balances()  # Get account balances
+    if balances:  # Verify if balances retrieved
+        for balance in balances:  # Iterate through balances
+            symbol = balance.get("symbol", "N/A")  # Get symbol
+            available = balance.get("available", "0")  # Get available balance
+            total = balance.get("total", "0")  # Get total balance
+            print(
+                f"{BackgroundColors.CYAN}  {symbol}: {BackgroundColors.YELLOW}Available={available}, Total={total}{Style.RESET_ALL}"
+            )  # Output balance information
+
+
 def display_average_price(account_manager):
     """
     Calculates and displays the average BTC purchase price.
