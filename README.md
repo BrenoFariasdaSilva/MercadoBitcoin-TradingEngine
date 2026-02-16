@@ -8,8 +8,8 @@
   
 ---
 
-Project-Description.
-  
+This repository implements a lightweight, rule-based automated trading engine for the Mercado Bitcoin exchange. The project provides an OAuth2 authenticator, a resilient API client with retry and re-authentication logic, account and balance management, and a `TradingBot` that monitors BTC prices and executes market buy/sell orders according to configurable percentage-based rules. It also includes a dual-channel `Logger` for colored terminal output and sanitized log files, plus a `Makefile` to simplify virtual environment setup and dependency installation.
+
 ---
 
 </div>
@@ -37,21 +37,21 @@ Project-Description.
 
 ## Table of Contents
 - [MercadoBitcoin-Trading Engine. ](#mercadobitcoin-trading-engine-)
-	- [Table of Contents](#table-of-contents)
-	- [Introduction](#introduction)
-	- [Requirements](#requirements)
-	- [Setup](#setup)
-		- [Clone the repository](#clone-the-repository)
-	- [Installation:](#installation)
-	- [Environment variables and `.env` template](#environment-variables-and-env-template)
-	- [Run Programing Language Code:](#run-programing-language-code)
-		- [Dependencies](#dependencies)
-		- [Dataset - Optional](#dataset---optional)
-	- [Usage](#usage)
-	- [Contributing](#contributing)
-	- [Collaborators](#collaborators)
-	- [License](#license)
-		- [Apache License 2.0](#apache-license-20)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Requirements](#requirements)
+  - [Setup](#setup)
+    - [Clone the repository](#clone-the-repository)
+  - [Installation:](#installation)
+  - [Environment variables and `.env` template](#environment-variables-and-env-template)
+  - [Run Programing Language Code:](#run-programing-language-code)
+    - [Dependencies](#dependencies)
+    - [Dataset - Optional](#dataset---optional)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [Collaborators](#collaborators)
+  - [License](#license)
+    - [Apache License 2.0](#apache-license-20)
 
 ## Introduction
 
