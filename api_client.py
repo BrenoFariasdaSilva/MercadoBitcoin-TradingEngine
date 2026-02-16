@@ -173,6 +173,20 @@ class APIClient:  # API client class for Mercado Bitcoin
         return self.make_request("GET", endpoint, authenticated=False)  # Make GET request to ticker endpoint
 
 
+    def get_tickers(self) -> Optional[List[Dict]]:
+        """
+        Retrieves ticker information for all symbols.
+        
+        :param: None
+        :return: List of ticker dictionaries or None if failed
+        """
+        
+        result = self.make_request("GET", "/tickers", authenticated=False)  # Make GET request to tickers endpoint
+        if result and isinstance(result, list):  # Verify if result is a list
+            return result  # Return list of tickers
+        return None  # Return None if not a list
+
+
 def create_api_client(authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2) -> APIClient:
     """
     Factory function to create an APIClient instance.
