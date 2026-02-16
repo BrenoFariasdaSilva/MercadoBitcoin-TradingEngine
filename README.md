@@ -181,3 +181,21 @@ Module documentation (responsibilities, exported classes and public functions, i
    git clone https://github.com/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine.git
    cd MercadoBitcoin-TradingEngine
    ```
+
+## Installation:
+
+This project is a Python application. Steps to prepare a runtime environment:
+
+1. Ensure Python 3.8+ is installed.
+2. (Optional) Create and activate a virtual environment and install dependencies:
+
+```bash
+python -m venv venv
+# On Windows
+venv\Scripts\activate
+# On Unix-like shells
+source venv/bin/activate
+make dependencies
+```
+
+The `Makefile` target `dependencies` will create the `venv` (if missing) and install packages from `requirements.txt`.
