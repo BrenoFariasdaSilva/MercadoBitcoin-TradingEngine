@@ -209,6 +209,32 @@ class TradingBot:
         return None  # Return None if no buy rule triggered
 
 
+    def verify_sell_rules(self, current_price: float, average_price: float) -> Optional[Dict]:
+        """
+        Evaluates sell rules and returns action if triggered.
+        
+        :param current_price: Current market price
+        :param average_price: Average purchase price
+        :return: Dictionary with action details or None if no rule triggered
+        """
+        
+        percentage_diff = self.calculate_percentage_difference(current_price, average_price)  # Calculate percentage difference
+        
+        rules = self.config.RULES  # Get trading rules
+        
+        if percentage_diff >= rules.BTC_SELL_THRESHOLD:  # Verify sell threshold (100%)
+            rule_key = f"sell_{int(average_price)}"  # Generate unique rule key
+            if rule_key not in self.executed_rules:  # Verify if rule not already executed
+                return {  # Return sell action
+                    "action": "sell",  # Action type
+                    "reason": f"Price {percentage_diff*100:.2f}% above average (threshold: 100%)",  # Reason
+                    "amount_percentage": rules.BTC_SELL_AMOUNT,  # Amount to sell (20%)
+                    "rule_key": rule_key  # Rule identifier
+                }
+        
+        return None  # Return None if no sell rule triggered
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
