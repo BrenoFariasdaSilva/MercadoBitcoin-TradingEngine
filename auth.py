@@ -165,6 +165,19 @@ class Authenticator:  # Authentication handler class
         }
 
 
+    def get_access_token(self) -> Optional[str]:
+        """
+        Returns the current access token if valid.
+        
+        :param: None
+        :return: Access token string if valid, None otherwise
+        """
+        
+        if not self.ensure_authenticated():  # Ensure valid authentication
+            return None  # Return None if authentication fails
+        return self.access_token  # Return access token
+
+
 def create_authenticator(api_key: str, api_secret: str, base_url: str) -> Authenticator:
     """
     Factory function to create and initialize an Authenticator instance.
