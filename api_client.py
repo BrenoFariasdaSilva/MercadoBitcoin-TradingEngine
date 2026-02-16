@@ -78,6 +78,22 @@ class APIClient:  # API client class for Mercado Bitcoin
         self.retry_delay = retry_delay  # Store retry delay
 
 
+    def get_executions(self, account_id: str, symbol: str, order_id: str) -> Optional[List[Dict]]:
+        """
+        Retrieves executions for a specific order.
+        
+        :param account_id: Account identifier
+        :param symbol: Trading pair symbol (e.g., BTC-BRL)
+        :param order_id: Order identifier
+        :return: List of execution dictionaries or None if failed
+        """
+        
+        order = self.get_order(account_id, symbol, order_id)  # Get order details
+        if order and "executions" in order:  # Verify if order has executions
+            return order["executions"]  # Return executions list
+        return None  # Return None if no executions found
+
+
     def get_positions(self, account_id: str) -> Optional[List[Dict]]:
         """
         Retrieves positions for a specific account.
