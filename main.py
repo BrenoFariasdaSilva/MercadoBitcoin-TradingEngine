@@ -113,6 +113,34 @@ def verbose_output(true_string="", false_string=""):
         print(false_string)  # Output the false statement string
 
 
+def initialize_account_manager(api_client):
+    """
+    Initializes the account manager and retrieves the account id.
+
+    :param api_client: The API client instance
+    :return: tuple(account_manager, account_id)
+    """
+
+    print(
+        f"{BackgroundColors.GREEN}Initializing account manager...{Style.RESET_ALL}"
+    )  # Output account manager initialization message
+
+    account_manager = create_account_manager(api_client)  # Create account manager instance
+
+    account_id = account_manager.get_account_id()  # Get account ID
+    if not account_id:  # Verify if account ID retrieved
+        print(
+            f"{BackgroundColors.RED}Failed to retrieve account ID!{Style.RESET_ALL}"
+        )  # Output failure message
+        return None, None  # Exit if account ID not available
+
+    print(
+        f"{BackgroundColors.GREEN}Account ID: {BackgroundColors.CYAN}{account_id}{Style.RESET_ALL}"
+    )  # Output account ID
+
+    return account_manager, account_id
+
+
 def display_account_balances(account_manager):
     """
     Retrieves and displays account balances.
