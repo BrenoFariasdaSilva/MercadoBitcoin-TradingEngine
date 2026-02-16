@@ -284,3 +284,7 @@ The required Python packages are listed in `requirements.txt`:
 
 - `requests==2.31.0`
 - `colorama==0.4.6`
+
+### Dataset - Optional
+
+This project does not require any external dataset to run. The section is retained for compatibility but no dataset-related commands are implemented in the repository.
