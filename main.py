@@ -113,6 +113,32 @@ def verbose_output(true_string="", false_string=""):
         print(false_string)  # Output the false statement string
 
 
+def start_trading_bot(trading_bot):
+    """
+    Starts the trading bot loop and handles interrupts and errors.
+
+    :param trading_bot: The trading bot instance
+    :return: None
+    """
+
+    print(
+        f"\n{BackgroundColors.BOLD}{BackgroundColors.GREEN}Starting trading bot... (Press Ctrl+C to stop){Style.RESET_ALL}\n"
+    )  # Output bot start message
+
+    try:  # Attempt to run trading bot
+        trading_bot.run()  # Start trading bot main loop
+    except KeyboardInterrupt:  # Handle keyboard interrupt
+        print(
+            f"\n{BackgroundColors.YELLOW}Keyboard interrupt received. Stopping bot...{Style.RESET_ALL}"
+        )  # Output interrupt message
+        trading_bot.stop()  # Stop trading bot
+    except Exception as e:  # Catch any other exceptions
+        print(
+            f"\n{BackgroundColors.RED}Error occurred: {str(e)}{Style.RESET_ALL}"
+        )  # Output error message
+        trading_bot.stop()  # Stop trading bot
+
+
 def verify_filepath_exists(filepath):
     """
     Verify if a file or folder exists at the specified path.
