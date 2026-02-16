@@ -56,7 +56,8 @@ class AccountManager:
     :param: None
     :return: None
     """
-    
+
+
     def __init__(self, api_client):
         """
         Initializes the AccountManager.
@@ -68,6 +69,21 @@ class AccountManager:
         self.api_client = api_client  # Store API client instance
         self.account_id: Optional[str] = None  # Initialize account ID as None
         self.accounts_cache: Optional[List[Dict]] = None  # Cache for accounts list
+
+
+    def get_positions(self) -> Optional[List[Dict]]:
+        """
+        Retrieves positions for the current account.
+        
+        :param: None
+        :return: List of position dictionaries or None if failed
+        """
+        
+        account_id = self.get_account_id()  # Get account ID
+        if not account_id:  # Verify if account ID is available
+            return None  # Return None if no account ID
+        
+        return self.api_client.get_positions(account_id)  # Request positions from API
 
 
 def create_account_manager(api_client) -> AccountManager:
