@@ -43,183 +43,121 @@ Project-Description.
 	- [Setup](#setup)
 		- [Clone the repository](#clone-the-repository)
 	- [Installation:](#installation)
+	- [Environment variables and `.env` template](#environment-variables-and-env-template)
 	- [Run Programing Language Code:](#run-programing-language-code)
 		- [Dependencies](#dependencies)
 		- [Dataset - Optional](#dataset---optional)
 	- [Usage](#usage)
-	- [Results - Optional](#results---optional)
-	- [How to Cite?](#how-to-cite)
 	- [Contributing](#contributing)
 	- [Collaborators](#collaborators)
 	- [License](#license)
 		- [Apache License 2.0](#apache-license-20)
-		- [Creative Commons Zero v1.0 Universal (CC0 1.0)](#creative-commons-zero-v10-universal-cc0-10)
-		- [MIT License](#mit-license)
 
 ## Introduction
 
-Detailed project description.
+This repository contains an automated trading bot for the Mercado Bitcoin exchange implemented in Python. The implementation is organized into modules that together perform authentication, API communication, account management, trading decision logic and logging. The code targets Python >= 3.8 and uses Mercado Bitcoin HTTP API v4 endpoints described below.
 
-## Requirements
+Module documentation (responsibilities, exported classes and public functions, interactions):
 
-Bullet points of the requirements.
+- `config.py`
+  - Responsibility: centralizes runtime configuration constants and trading rules.
+  - Classes:
+    - `TradingRules` — trading thresholds and allocation percentages.
+    - `APIConfig` — API constants: `BASE_URL`, `TIMEOUT`, `MAX_RETRIES`, `RETRY_DELAY`.
+    - `MonitoringConfig` — monitoring constants: `VERIFICATION_INTERVAL`, `SYMBOLS_TO_MONITOR`, `PRIMARY_SYMBOL`, `CRYPTO_SYMBOL`, `FIAT_SYMBOL`.
+    - `Config` — aggregated configuration class exposing values and reading environment variables `MB_API_KEY`, `MB_API_SECRET` (default empty string).
+  - Public functions:
+    - `validate_config() -> bool` — returns `True` only if `Config.API_KEY`, `Config.API_SECRET` and `Config.BASE_URL` are present.
+    - `get_config_summary() -> dict` — returns a non-sensitive summary of selected `Config` values.
+  - Interaction: consumed by `main.py` and passed to `TradingBot` and `APIClient`.
 
-## Setup
+- `auth.py`
+  - Responsibility: performs OAuth2 client-credentials authentication and provides authorization headers.
+  - Classes:
+    - `Authenticator(api_key: str, api_secret: str, base_url: str)`
+      - Methods:
+        - `authenticate() -> bool` — POSTs to `${base_url}/oauth2/token` with `grant_type=client_credentials` using HTTP Basic auth; stores `access_token`, `token_type` and `token_expiry` (expires_in minus 300s buffer).
+        - `is_token_valid() -> bool` — `True` when token exists and not expired.
+        - `ensure_authenticated() -> bool` — ensures valid token or re-authenticates.
+        - `get_auth_headers() -> Dict[str, str]` — returns `{"Authorization": "{token_type} {access_token}"}` or `{}` if auth fails.
+        - `get_access_token() -> Optional[str]` — returns token or `None`.
+  - Authentication specifics: uses HTTP Basic auth to request an access token from `${BASE_URL}/oauth2/token` with `grant_type=client_credentials`. Tokens are stored in memory. No nonce or timestamp signing is used — authentication relies on the bearer token.
+  - Interaction: used by `APIClient` to add bearer authorization headers to authenticated requests.
 
-### Clone the repository
+- `api_client.py`
+  - Responsibility: HTTP client wrapper for Mercado Bitcoin v4 with retry logic and automatic re-authentication on 401.
+  - Classes:
+    - `APIClient(authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2)`
+      - Public methods (signatures and return types):
+        - `make_request(method: str, endpoint: str, params: Optional[dict] = None, data: Optional[dict] = None, authenticated: bool = True) -> Optional[dict]`
+        - `get_accounts() -> Optional[List[dict]]` — GET `/accounts`.
+        - `get_balances(account_id: str) -> Optional[List[dict]]` — GET `/accounts/{account_id}/balances`.
+        - `get_ticker(symbol: str) -> Optional[dict]` — GET `/{symbol}/ticker` (unauthenticated).
+        - `get_tickers() -> Optional[List[dict]]` — GET `/tickers` (unauthenticated).
+        - `get_orderbook(symbol: str) -> Optional[dict]` — GET `/{symbol}/orderbook` (unauthenticated).
+        - `get_orders(account_id: str, symbol: str) -> Optional[List[dict]]` — GET `/accounts/{account_id}/{symbol}/orders`.
+        - `get_all_orders(account_id: str) -> Optional[dict]` — GET `/accounts/{account_id}/orders`.
+        - `get_order(account_id: str, symbol: str, order_id: str) -> Optional[dict]` — GET `/accounts/{account_id}/{symbol}/orders/{order_id}`.
+        - `place_order(account_id: str, symbol: str, side: str, order_type: str, qty: Optional[str] = None, cost: Optional[float] = None, limit_price: Optional[float] = None) -> Optional[dict]` — POST `/accounts/{account_id}/{symbol}/orders`.
+        - `cancel_order(account_id: str, symbol: str, order_id: str) -> Optional[dict]` — DELETE `/accounts/{account_id}/{symbol}/orders/{order_id}`.
+        - `get_positions(account_id: str) -> Optional[List[dict]]` — GET `/accounts/{account_id}/positions`.
+        - `get_executions(account_id: str, symbol: str, order_id: str) -> Optional[List[dict]]` — returns `order['executions']` when present.
+  - HTTP behavior: `make_request` sets `Content-Type: application/json`, merges `authenticator.get_auth_headers()` for authenticated requests, treats HTTP 200 as success (returns parsed JSON), re-authenticates on 401 when `authenticated=True`, and retries other failures up to `max_retries` using `retry_delay`.
 
-1. Clone the repository with the following command:
+- `account.py`
+  - Responsibility: account selection, balance queries and average price calculation from executed trades.
+  - Classes:
+    - `AccountManager(api_client)`
+      - Methods and return types:
+        - `get_accounts() -> Optional[List[dict]]` — caches and returns accounts list.
+        - `get_account_id() -> Optional[str]` — returns or sets the first account id.
+        - `set_account_id(account_id: str) -> None`.
+        - `get_balances() -> Optional[List[dict]]`.
+        - `get_balance(symbol: str) -> Optional[dict]`.
+        - `get_available_balance(symbol: str) -> float` — returns `float` or `0.0`.
+        - `get_total_balance(symbol: str) -> float` — returns `float` or `0.0`.
+        - `get_all_orders() -> Optional[dict]`.
+        - `get_orders_for_symbol(symbol: str) -> Optional[List[dict]]`.
+        - `calculate_average_price(crypto_symbol: str, trading_pair: str) -> Optional[float]` — computes weighted average from buy executions in `/accounts/{account_id}/orders` response (expects `items` list and per-order `executions`).
+        - `get_positions() -> Optional[List[dict]]`.
+  - Interaction: used by `main.py` for display and by `TradingBot` for balance checks and average price computation.
 
-   ```bash
-   git clone https://github.com/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine.git
-   cd MercadoBitcoin-TradingEngine
-   ```
+- `trader.py`
+  - Responsibility: rule-based trading logic and order execution.
+  - Classes:
+    - `TradingBot(api_client, account_manager, config, logger=None)`
+      - Public methods:
+        - `log(message: str) -> None` — prints to stdout (redirected by `main.py` to `Logger`).
+        - `get_current_price(symbol: str) -> Optional[float]` — reads `ticker['last']` and returns `float`.
+        - `update_average_price() -> bool` — updates cached average price from `AccountManager.calculate_average_price`.
+        - `get_average_price() -> Optional[float]` — returns cached average price, updating if needed.
+        - `calculate_percentage_difference(current_price: float, average_price: float) -> float` — returns decimal percentage difference.
+        - `verify_buy_rules(current_price: float, average_price: float) -> Optional[dict]` — checks three buy thresholds and returns an action dict when triggered.
+        - `verify_sell_rules(current_price: float, average_price: float) -> Optional[dict]` — checks sell threshold and returns an action dict when triggered.
+        - `execute_buy(amount_percentage: float, rule_key: str) -> bool` — checks available BRL, enforces minimum order value (10 BRL), places a market buy using `cost` field.
+        - `execute_sell(amount_percentage: float, rule_key: str) -> bool` — checks available BTC, enforces minimum quantity (0.00001 BTC), places a market sell using `qty` field.
+        - `evaluate_and_execute() -> None` — orchestrates price retrieval, rule evaluation and execution.
+        - `run_cycle() -> None` — calls `evaluate_and_execute()` and logs exceptions.
+        - `run() -> None` — main loop: calls `run_cycle()` then sleeps `config.VERIFICATION_INTERVAL` seconds.
+        - `stop() -> None` — stops the loop.
+  - Trading rules (exact implementation):
+    - Buy thresholds (current price above weighted average purchase price):
+      - 10% (`TradingRules.BTC_BUY_THRESHOLD_1 = 0.10`) → buy 10% of available BRL (`BTC_BUY_AMOUNT_1 = 0.10`).
+      - 20% (`TradingRules.BTC_BUY_THRESHOLD_2 = 0.20`) → buy 20% of available BRL (`BTC_BUY_AMOUNT_2 = 0.20`).
+      - 25% (`TradingRules.BTC_BUY_THRESHOLD_3 = 0.25`) → buy 50% of available BRL (`BTC_BUY_AMOUNT_3 = 0.50`).
+    - Sell threshold:
+      - 100% (`TradingRules.BTC_SELL_THRESHOLD = 1.00`) → sell 20% of available BTC (`BTC_SELL_AMOUNT = 0.20`).
+  - Duplicate-execution protection: triggered actions are assigned `rule_key` strings like `buy_1_{int(average_price)}` or `sell_{int(average_price)}` and stored in `self.executed_rules` after successful execution; this prevents re-executing the same rule for the same integer average-price bucket.
 
-## Installation:
+- `Logger.py`
+  - Responsibility: dual-channel logger that mirrors console output to a sanitized log file while preserving color to the terminal when supported.
+  - Classes:
+    - `Logger(logfile_path, clean=False)` with `write(message)`, `flush()` and `close()`.
+  - Behavior: strips ANSI escape sequences for file output using regex `\x1B\[[0-9;]*[a-zA-Z]`. `main.py` replaces `sys.stdout`/`sys.stderr` with `Logger` writing to `./Logs/main.log`.
 
-* Programing Language:
-
-  * Manually:
-      ```bash
-      # Programing Language:
-      sudo apt install program-language -y
-      ```
-
-  * Using Makefile:
-      ```bash
-      make install
-      ```
-
-  * Using ShellScript:
-      ```bash
-      chmod +x install.sh
-      sudo ./install.sh
-      ```  
-
-## Run Programing Language Code:
-
-```bash
-# Command here 
-```
-
-### Dependencies
-
-1. Install the project dependencies with the following command:
-
-   ```bash
-   make dependencies
-   ```
-
-### Dataset - Optional
-
-1. Download the dataset from [WEBSITE-HERE]() and place it in this project directory `(/MercadoBitcoin-TradingEngine)` and run the following command:
-
-   ```bash
-   make dataset
-   ```
-
-## Usage
-
-In order to run the project, run the following command:
-
-```bash
-make run
-```
-
-## Results - Optional
-
-Discuss the results obtained in the project.
-
-## How to Cite?
-
-If you use the Repository-Name in your research, please cite it using the following BibTeX entry:
-
-```
-@misc{softwareRepository-Name:2024,
-  title = {Repository-Name: Project-Description},
-  author = {Breno Farias da Silva},
-  year = {2024},
-  howpublished = {https://github.com/BrenoFariasdaSilva/Repository-Name},
-  note = {Accessed on September 11, 2024}
-}
-```
-
-Additionally, a `main.bib` file is available in the root directory of this repository, in which contains the BibTeX entry for this project.
-
-If you find this repository valuable, please don't forget to give it a ⭐ to show your support! Contributions are highly encouraged, whether by creating issues for feedback or submitting pull requests (PRs) to improve the project. For details on how to contribute, please refer to the [Contributing](#contributing) section below.
-
-Thank you for your support and for recognizing the contribution of this tool to your work!
-
-## Contributing
-
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. If you have suggestions for improving the code, your insights will be highly welcome.
-In order to contribute to this project, please follow the guidelines below or read the [CONTRIBUTING.md](CONTRIBUTING.md) file for more details on how to contribute to this project, as it contains information about the commit standards and the entire pull request process.
-Please follow these guidelines to make your contributions smooth and effective:
-
-1. **Set Up Your Environment**: Ensure you've followed the setup instructions in the [Setup](#setup) section to prepare your development environment.
-
-2. **Make Your Changes**:
-   - **Create a Branch**: `git checkout -b feature/YourFeatureName`
-   - **Implement Your Changes**: Make sure to test your changes thoroughly.
-   - **Commit Your Changes**: Use clear commit messages, for example:
-     - For new features: `git commit -m "FEAT: Add some AmazingFeature"`
-     - For bug fixes: `git commit -m "FIX: Resolve Issue #123"`
-     - For documentation: `git commit -m "DOCS: Update README with new instructions"`
-     - For refactorings: `git commit -m "REFACTOR: Enhance component for better aspect"`
-     - For snapshots: `git commit -m "SNAPSHOT: Temporary commit to save the current state for later reference"`
-   - See more about crafting commit messages in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
-
-3. **Submit Your Contribution**:
-   - **Push Your Changes**: `git push origin feature/YourFeatureName`
-   - **Open a Pull Request (PR)**: Navigate to the repository on GitHub and open a PR with a detailed description of your changes.
-
-4. **Stay Engaged**: Respond to any feedback from the project maintainers and make necessary adjustments to your PR.
-
-5. **Celebrate**: Once your PR is merged, celebrate your contribution to the project!
-
-## Collaborators
-
-We thank the following people who contributed to this project:
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="#" title="defina o titulo do link">
-        <img src="https://github.com/BrenoFariasdaSilva.png" width="100px;" alt="My Profile Picture"/><br>
-        <sub>
-          <b>Breno Farias da Silva</b>
-        </sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="#" title="defina o titulo do link">
-        <img src="https://github.com/BrenoFariasdaSilva.png" width="100px;" alt="My Profile Picture"/><br>
-        <sub>
-          <b>Breno Farias da Silva</b>
-        </sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="#" title="defina o titulo do link">
-        <img src="https://github.com/BrenoFariasdaSilva.png" width="100px;" alt="My Profile Picture"/><br>
-        <sub>
-          <b>Breno Farias da Silva</b>
-        </sub>
-      </a>
-    </td>
-  </tr>
-</table>
-
-## License
-
-### Apache License 2.0
-
-This project is licensed under the [Apache License 2.0](LICENSE). This license permits use, modification, distribution, and sublicense of the code for both private and commercial purposes, provided that the original copyright notice and a disclaimer of warranty are included in all copies or substantial portions of the software. It also requires a clear attribution back to the original author(s) of the repository. For more details, see the [LICENSE](LICENSE) file in this repository.
-
-### Creative Commons Zero v1.0 Universal (CC0 1.0)
-
-This project is licensed under the [Creative Commons Zero v1.0 Universal](LICENSE) (CC0 1.0) Public Domain Dedication. This means that the work is released into the public domain, allowing anyone to use, modify, distribute, and perform the work, even for commercial purposes, without asking permission and without attributing the original author(s). However, it's appreciated if you include a copy of the license or a link to it in any significant use or distribution. For more details, see the [LICENSE](LICENSE) file in this repository.
-
-### MIT License
-
-This project is licensed under the [MIT License](LICENSE). The MIT License is a permissive license that is short and to the point. It lets people do anything they want with your code as long as they provide attribution back to you and don’t hold you liable. This license allows for commercial use, modification, distribution, private use, and sublicensing. See the [LICENSE](LICENSE) file in this repository for more details.
+- `main.py`
+  - Responsibility: program entry point, validation, initialization and orchestration of the components above.
+  - Key steps performed by `main()`:
+    - Validates `Config` (requires `MB_API_KEY` and `MB_API_SECRET`).
+    - Initializes `Authenticator`, `APIClient`, `AccountManager`, prints balances and average BTC price, creates `TradingBot` and starts the trading loop (`trading_bot.run()`).
+    - Provides utility helpers: `display_configuration_summary()`, `display_trading_rules()`, `display_account_balances()`, `calculate_execution_time()`, `play_sound()` (skipped on Windows).
