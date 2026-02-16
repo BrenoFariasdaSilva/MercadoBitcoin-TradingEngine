@@ -133,6 +133,19 @@ class TradingBot:
         return False  # Return failure
 
 
+    def get_average_price(self) -> Optional[float]:
+        """
+        Returns the current average purchase price, updating if necessary.
+        
+        :param: None
+        :return: Average price as float or None if unavailable
+        """
+        
+        if self.current_average_price is None:  # Verify if average price not cached
+            self.update_average_price()  # Update average price
+        return self.current_average_price  # Return cached average price
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
