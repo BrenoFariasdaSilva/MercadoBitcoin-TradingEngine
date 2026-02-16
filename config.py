@@ -43,3 +43,27 @@ Assumptions & Notes:
 
 import os  # For accessing environment variables
 
+
+# Classes Definitions:
+
+
+class TradingRules:
+    """
+    Trading rules for BTC operations.
+    
+    :param: None
+    :return: None
+    """
+    
+    BTC_BUY_THRESHOLD_1 = 0.10  # 10% above average price triggers buy of 10% BRL balance
+    BTC_BUY_AMOUNT_1 = 0.10  # Buy 10% of available BRL balance
+    
+    BTC_BUY_THRESHOLD_2 = 0.20  # 20% above average price triggers buy of 20% BRL balance
+    BTC_BUY_AMOUNT_2 = 0.20  # Buy 20% of available BRL balance
+    
+    BTC_BUY_THRESHOLD_3 = 0.25  # 25% above average price triggers buy of 50% BRL balance
+    BTC_BUY_AMOUNT_3 = 0.50  # Buy 50% of available BRL balance
+    
+    BTC_SELL_THRESHOLD = 1.00  # 100% above average price (double) triggers sell
+    BTC_SELL_AMOUNT = 0.20  # Sell 20% of BTC position
+
