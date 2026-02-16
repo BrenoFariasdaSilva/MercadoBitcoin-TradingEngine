@@ -146,6 +146,23 @@ class TradingBot:
         return self.current_average_price  # Return cached average price
 
 
+    def calculate_percentage_difference(self, current_price: float, average_price: float) -> float:
+        """
+        Calculates percentage difference between current and average price.
+        
+        :param current_price: Current market price
+        :param average_price: Average purchase price
+        :return: Percentage difference as decimal (0.10 = 10%)
+        """
+        
+        if average_price == 0:  # Verify for division by zero
+            return 0.0  # Return zero if average price is zero
+        
+        difference = current_price - average_price  # Calculate price difference
+        percentage = difference / average_price  # Calculate percentage
+        return percentage  # Return percentage difference
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
