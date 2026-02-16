@@ -199,6 +199,22 @@ class APIClient:  # API client class for Mercado Bitcoin
         return self.make_request("GET", endpoint, authenticated=False)  # Make GET request to orderbook endpoint
 
 
+    def get_orders(self, account_id: str, symbol: str) -> Optional[List[Dict]]:
+        """
+        Retrieves orders for a specific account and symbol.
+        
+        :param account_id: Account identifier
+        :param symbol: Trading pair symbol (e.g., BTC-BRL)
+        :return: List of order dictionaries or None if failed
+        """
+        
+        endpoint = f"/accounts/{account_id}/{symbol}/orders"  # Construct endpoint path
+        result = self.make_request("GET", endpoint)  # Make GET request to orders endpoint
+        if result and isinstance(result, list):  # Verify if result is a list
+            return result  # Return list of orders
+        return None  # Return None if not a list
+
+
 def create_api_client(authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2) -> APIClient:
     """
     Factory function to create an APIClient instance.
