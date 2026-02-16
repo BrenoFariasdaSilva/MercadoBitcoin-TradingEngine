@@ -71,6 +71,54 @@ class AccountManager:
         self.accounts_cache: Optional[List[Dict]] = None  # Cache for accounts list
 
 
+    def calculate_average_price(self, crypto_symbol: str, trading_pair: str) -> Optional[float]:
+        """
+        Calculates average purchase price for a cryptocurrency from executions.
+        
+        :param crypto_symbol: Cryptocurrency symbol (e.g., BTC)
+        :param trading_pair: Trading pair symbol (e.g., BTC-BRL)
+        :return: Average price as float or None if no executions
+        """
+        
+        all_orders_data = self.get_all_orders()  # Get all orders
+        if not all_orders_data:  # Verify if orders data exists
+            return None  # Return None if no orders data
+        
+        orders = all_orders_data.get("items", [])  # Extract orders list from response
+        
+        total_cost = 0.0  # Initialize total cost accumulator
+        total_qty = 0.0  # Initialize total quantity accumulator
+        
+        for order in orders:  # Iterate through all orders
+            if order.get("instrument") != trading_pair:  # Verify if order is for the trading pair
+                continue  # Skip orders for other pairs
+            
+            if order.get("side") != "buy":  # Verify if order is a buy order
+                continue  # Skip sell orders
+            
+            executions = order.get("executions", [])  # Get executions list
+            
+            for execution in executions:  # Iterate through executions
+                price = execution.get("price")  # Get execution price
+                qty = execution.get("qty")  # Get execution quantity
+                
+                if price is None or qty is None:  # Verify if price and quantity exist
+                    continue  # Skip incomplete executions
+                
+                try:  # Attempt to convert and calculate
+                    exec_price = float(price)  # Convert price to float
+                    exec_qty = float(qty)  # Convert quantity to float
+                    total_cost += exec_price * exec_qty  # Add to total cost
+                    total_qty += exec_qty  # Add to total quantity
+                except (ValueError, TypeError):  # Handle conversion errors
+                    continue  # Skip invalid executions
+        
+        if total_qty > 0:  # Verify if any quantity was accumulated
+            return total_cost / total_qty  # Return weighted average price
+        
+        return None  # Return None if no buy executions found
+
+
     def get_positions(self) -> Optional[List[Dict]]:
         """
         Retrieves positions for the current account.
