@@ -78,6 +78,22 @@ class APIClient:  # API client class for Mercado Bitcoin
         self.retry_delay = retry_delay  # Store retry delay
 
 
+    def get_orders(self, account_id: str, symbol: str) -> Optional[List[Dict]]:
+        """
+        Retrieves orders for a specific account and symbol.
+        
+        :param account_id: Account identifier
+        :param symbol: Trading pair symbol (e.g., BTC-BRL)
+        :return: List of order dictionaries or None if failed
+        """
+        
+        endpoint = f"/accounts/{account_id}/{symbol}/orders"  # Construct endpoint path
+        result = self.make_request("GET", endpoint)  # Make GET request to orders endpoint
+        if result and isinstance(result, list):  # Verify if result is a list
+            return result  # Return list of orders
+        return None  # Return None if not a list
+
+
     def get_orderbook(self, symbol: str) -> Optional[Dict]:
         """
         Retrieves order book for a symbol.
