@@ -240,16 +240,49 @@ def main():
     """
 
     print(
-        f"{BackgroundColors.CLEAR_TERMINAL}{BackgroundColors.BOLD}{BackgroundColors.GREEN}Welcome to the {BackgroundColors.CYAN}Main Template Python{BackgroundColors.GREEN} program!{Style.RESET_ALL}",
+        f"{BackgroundColors.CLEAR_TERMINAL}{BackgroundColors.BOLD}{BackgroundColors.GREEN}Welcome to the {BackgroundColors.CYAN}Mercado Bitcoin Trading Bot{BackgroundColors.GREEN} program!{Style.RESET_ALL}",
         end="\n\n",
     )  # Output the welcome message
     start_time = datetime.datetime.now()  # Get the start time of the program
-    
-    # Implement logic here
+
+    verbose_output(
+        f"{BackgroundColors.GREEN}Validating configuration...{Style.RESET_ALL}"
+    )  # Output configuration validation message
+
+    if not validate_config():  # Verify if configuration is valid
+        print(
+            f"{BackgroundColors.RED}Configuration validation failed!{Style.RESET_ALL}"
+        )  # Output error message
+        print(
+            f"{BackgroundColors.RED}Please set MB_API_KEY and MB_API_SECRET environment variables.{Style.RESET_ALL}"
+        )  # Output instructions
+        return  # Exit if configuration invalid
+
+    display_configuration_summary()  # Show configuration summary
+
+    authenticator = initialize_authenticator()  # Initialize authenticator
+    if not authenticator:  # Verify if authentication successful
+        return  # Exit if authentication failed
+
+    api_client = initialize_api_client(authenticator)  # Initialize API client
+
+    account_manager, account_id = initialize_account_manager(api_client)  # Initialize account manager
+    if not account_id:  # Verify if account ID retrieved
+        return  # Exit if account ID not available
+
+    display_account_balances(account_manager)  # Show account balances
+
+    avg_price = display_average_price(account_manager)  # Calculate and display average price
+
+    trading_bot = initialize_trading_bot(api_client, account_manager, logger)  # Initialize trading bot
+
+    display_trading_rules()  # Show trading rules
+
+    start_trading_bot(trading_bot)  # Start the trading bot loop
 
     finish_time = datetime.datetime.now()  # Get the finish time of the program
     print(
-        f"{BackgroundColors.GREEN}Start time: {BackgroundColors.CYAN}{start_time.strftime('%d/%m/%Y - %H:%M:%S')}\n{BackgroundColors.GREEN}Finish time: {BackgroundColors.CYAN}{finish_time.strftime('%d/%m/%Y - %H:%M:%S')}\n{BackgroundColors.GREEN}Execution time: {BackgroundColors.CYAN}{calculate_execution_time(start_time, finish_time)}{Style.RESET_ALL}"
+        f"\n{BackgroundColors.GREEN}Start time: {BackgroundColors.CYAN}{start_time.strftime('%d/%m/%Y - %H:%M:%S')}\n{BackgroundColors.GREEN}Finish time: {BackgroundColors.CYAN}{finish_time.strftime('%d/%m/%Y - %H:%M:%S')}\n{BackgroundColors.GREEN}Execution time: {BackgroundColors.CYAN}{calculate_execution_time(start_time, finish_time)}{Style.RESET_ALL}"
     )  # Output the start and finish times
     print(
         f"\n{BackgroundColors.BOLD}{BackgroundColors.GREEN}Program finished.{Style.RESET_ALL}"
