@@ -245,3 +245,42 @@ make run
 ```
 
 Note: the application itself does not parse `.env` automatically; the commands above export variables into the shell process so that `main.py` can read them via `os.getenv()`.
+
+## Run Programing Language Code:
+
+Run the bot using the provided `Makefile` or directly with Python after ensuring the required environment variables are present in your session as described above.
+
+Examples (POSIX shells):
+
+```bash
+# load .env into the session
+set -a; source .env; set +a
+make run
+```
+
+Examples (Windows PowerShell):
+
+```powershell
+# copy and edit .env once, then load into session
+Get-Content .env | ForEach-Object { if ($_ -and -not ($_ -match '^\s*#')) { $parts = $_ -split '=',2; if ($parts.Count -eq 2) { $name = $parts[0].Trim(); $value = $parts[1].Trim(); $env:$name = $value } } }
+make run
+```
+
+Or run directly (ensure env vars are set in the session):
+
+```bash
+python main.py
+```
+
+### Dependencies
+
+1. Install the project dependencies with the following command:
+
+   ```bash
+   make dependencies
+   ```
+
+The required Python packages are listed in `requirements.txt`:
+
+- `requests==2.31.0`
+- `colorama==0.4.6`
