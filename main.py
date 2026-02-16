@@ -113,6 +113,29 @@ def verbose_output(true_string="", false_string=""):
         print(false_string)  # Output the false statement string
 
 
+def initialize_api_client(authenticator):
+    """
+    Initializes the API client.
+
+    :param authenticator: The authenticator instance
+    :return: api_client
+    """
+
+    print(
+        f"{BackgroundColors.GREEN}Initializing API client...{Style.RESET_ALL}"
+    )  # Output API client initialization message
+
+    api_client = create_api_client(  # Create API client instance
+        authenticator,  # Authenticator instance
+        Config.BASE_URL,  # Base URL from config
+        Config.TIMEOUT,  # Timeout from config
+        Config.MAX_RETRIES,  # Max retries from config
+        Config.RETRY_DELAY  # Retry delay from config
+    )
+
+    return api_client
+
+
 def initialize_account_manager(api_client):
     """
     Initializes the account manager and retrieves the account id.
