@@ -215,6 +215,18 @@ class APIClient:  # API client class for Mercado Bitcoin
         return None  # Return None if not a list
 
 
+    def get_all_orders(self, account_id: str) -> Optional[Dict]:
+        """
+        Retrieves all orders for a specific account.
+        
+        :param account_id: Account identifier
+        :return: Dictionary containing all orders or None if failed
+        """
+        
+        endpoint = f"/accounts/{account_id}/orders"  # Construct endpoint path
+        return self.make_request("GET", endpoint)  # Make GET request to all orders endpoint
+
+
 def create_api_client(authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2) -> APIClient:
     """
     Factory function to create an APIClient instance.
