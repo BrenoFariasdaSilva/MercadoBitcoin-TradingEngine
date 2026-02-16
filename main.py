@@ -113,6 +113,30 @@ def verbose_output(true_string="", false_string=""):
         print(false_string)  # Output the false statement string
 
 
+def initialize_trading_bot(api_client, account_manager, logger):
+    """
+    Initializes the trading bot instance.
+
+    :param api_client: The API client instance
+    :param account_manager: The account manager instance
+    :param logger: The logger instance
+    :return: trading_bot
+    """
+
+    print(
+        f"\n{BackgroundColors.GREEN}Initializing trading bot...{Style.RESET_ALL}"
+    )  # Output trading bot initialization message
+
+    trading_bot = create_trading_bot(  # Create trading bot instance
+        api_client,  # API client instance
+        account_manager,  # Account manager instance
+        Config,  # Configuration
+        logger  # Logger instance
+    )
+
+    return trading_bot
+
+
 def display_trading_rules():
     """
     Displays configured trading rules.
