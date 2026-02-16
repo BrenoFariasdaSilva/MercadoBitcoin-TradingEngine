@@ -71,6 +71,25 @@ class AccountManager:
         self.accounts_cache: Optional[List[Dict]] = None  # Cache for accounts list
 
 
+    def get_balance(self, symbol: str) -> Optional[Dict]:
+        """
+        Retrieves balance for a specific symbol.
+        
+        :param symbol: Currency symbol (e.g., BTC, BRL)
+        :return: Balance dictionary or None if not found
+        """
+        
+        balances = self.get_balances()  # Get all balances
+        if not balances:  # Verify if balances retrieved
+            return None  # Return None if no balances
+        
+        for balance in balances:  # Iterate through balances
+            if balance.get("symbol") == symbol:  # Verify if symbol matches
+                return balance  # Return matching balance
+        
+        return None  # Return None if symbol not found
+
+
     def get_available_balance(self, symbol: str) -> float:
         """
         Returns available balance for a specific symbol.
