@@ -113,6 +113,35 @@ def verbose_output(true_string="", false_string=""):
         print(false_string)  # Output the false statement string
 
 
+def display_average_price(account_manager):
+    """
+    Calculates and displays the average BTC purchase price.
+
+    :param account_manager: The account manager instance
+    :return: avg_price
+    """
+
+    print(
+        f"\n{BackgroundColors.GREEN}Calculating average BTC purchase price...{Style.RESET_ALL}"
+    )  # Output average price calculation message
+
+    avg_price = account_manager.calculate_average_price(  # Calculate average price
+        Config.CRYPTO,  # Crypto symbol
+        Config.PRIMARY_SYMBOL  # Trading pair
+    )
+
+    if avg_price:  # Verify if average price calculated
+        print(
+            f"{BackgroundColors.GREEN}Average BTC price: {BackgroundColors.CYAN}{avg_price:.2f} BRL{Style.RESET_ALL}"
+        )  # Output average price
+    else:  # No average price available
+        print(
+            f"{BackgroundColors.YELLOW}No BTC purchase history found.{Style.RESET_ALL}"
+        )  # Output no history message
+
+    return avg_price
+
+
 def initialize_trading_bot(api_client, account_manager, logger):
     """
     Initializes the trading bot instance.
