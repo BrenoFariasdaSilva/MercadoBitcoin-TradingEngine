@@ -78,6 +78,18 @@ class APIClient:  # API client class for Mercado Bitcoin
         self.retry_delay = retry_delay  # Store retry delay
 
 
+    def get_ticker(self, symbol: str) -> Optional[Dict]:
+        """
+        Retrieves ticker information for a symbol.
+        
+        :param symbol: Trading pair symbol (e.g., BTC-BRL)
+        :return: Ticker dictionary or None if failed
+        """
+        
+        endpoint = f"/{symbol}/ticker"  # Construct endpoint path
+        return self.make_request("GET", endpoint, authenticated=False)  # Make GET request to ticker endpoint
+
+
     def get_balances(self, account_id: str) -> Optional[List[Dict]]:
         """
         Retrieves balances for a specific account.
