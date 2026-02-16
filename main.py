@@ -113,6 +113,25 @@ def verbose_output(true_string="", false_string=""):
         print(false_string)  # Output the false statement string
 
 
+def display_configuration_summary():
+    """
+    Displays configuration summary.
+
+    :param: None
+    :return: None
+    """
+
+    verbose_output(
+        f"{BackgroundColors.GREEN}Configuration valid. Summary:{Style.RESET_ALL}"
+    )  # Output configuration valid message
+
+    config_summary = get_config_summary()  # Get configuration summary
+    for key, value in config_summary.items():  # Iterate through configuration items
+        verbose_output(
+            f"{BackgroundColors.CYAN}  {key}: {BackgroundColors.YELLOW}{value}{Style.RESET_ALL}"
+        )  # Output each configuration item
+
+
 def initialize_authenticator():
     """
     Initializes and validates the authenticator.
