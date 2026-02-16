@@ -78,6 +78,21 @@ class APIClient:  # API client class for Mercado Bitcoin
         self.retry_delay = retry_delay  # Store retry delay
 
 
+    def get_positions(self, account_id: str) -> Optional[List[Dict]]:
+        """
+        Retrieves positions for a specific account.
+        
+        :param account_id: Account identifier
+        :return: List of position dictionaries or None if failed
+        """
+        
+        endpoint = f"/accounts/{account_id}/positions"  # Construct endpoint path
+        result = self.make_request("GET", endpoint)  # Make GET request to positions endpoint
+        if result and isinstance(result, list):  # Verify if result is a list
+            return result  # Return list of positions
+        return None  # Return None if not a list
+
+
     def cancel_order(self, account_id: str, symbol: str, order_id: str) -> Optional[Dict]:
         """
         Cancels an existing order.
