@@ -163,6 +163,52 @@ class TradingBot:
         return percentage  # Return percentage difference
 
 
+    def verify_buy_rules(self, current_price: float, average_price: float) -> Optional[Dict]:
+        """
+        Evaluates buy rules and returns action if triggered.
+        
+        :param current_price: Current market price
+        :param average_price: Average purchase price
+        :return: Dictionary with action details or None if no rule triggered
+        """
+        
+        percentage_diff = self.calculate_percentage_difference(current_price, average_price)  # Calculate percentage difference
+        
+        rules = self.config.RULES  # Get trading rules
+        
+        if percentage_diff >= rules.BTC_BUY_THRESHOLD_3:  # Verify threshold 3 (25%)
+            rule_key = f"buy_3_{int(average_price)}"  # Generate unique rule key
+            if rule_key not in self.executed_rules:  # Verify if rule not already executed
+                return {  # Return buy action
+                    "action": "buy",  # Action type
+                    "reason": f"Price {percentage_diff*100:.2f}% above average (threshold: 25%)",  # Reason
+                    "amount_percentage": rules.BTC_BUY_AMOUNT_3,  # Amount to buy (50%)
+                    "rule_key": rule_key  # Rule identifier
+                }
+        
+        elif percentage_diff >= rules.BTC_BUY_THRESHOLD_2:  # Verify threshold 2 (20%)
+            rule_key = f"buy_2_{int(average_price)}"  # Generate unique rule key
+            if rule_key not in self.executed_rules:  # Verify if rule not already executed
+                return {  # Return buy action
+                    "action": "buy",  # Action type
+                    "reason": f"Price {percentage_diff*100:.2f}% above average (threshold: 20%)",  # Reason
+                    "amount_percentage": rules.BTC_BUY_AMOUNT_2,  # Amount to buy (20%)
+                    "rule_key": rule_key  # Rule identifier
+                }
+        
+        elif percentage_diff >= rules.BTC_BUY_THRESHOLD_1:  # Verify threshold 1 (10%)
+            rule_key = f"buy_1_{int(average_price)}"  # Generate unique rule key
+            if rule_key not in self.executed_rules:  # Verify if rule not already executed
+                return {  # Return buy action
+                    "action": "buy",  # Action type
+                    "reason": f"Price {percentage_diff*100:.2f}% above average (threshold: 10%)",  # Reason
+                    "amount_percentage": rules.BTC_BUY_AMOUNT_1,  # Amount to buy (10%)
+                    "rule_key": rule_key  # Rule identifier
+                }
+        
+        return None  # Return None if no buy rule triggered
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
