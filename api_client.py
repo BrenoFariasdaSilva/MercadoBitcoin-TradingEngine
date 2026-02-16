@@ -288,6 +288,21 @@ class APIClient:  # API client class for Mercado Bitcoin
         return self.make_request("DELETE", endpoint)  # Make DELETE request to cancel order
 
 
+    def get_positions(self, account_id: str) -> Optional[List[Dict]]:
+        """
+        Retrieves positions for a specific account.
+        
+        :param account_id: Account identifier
+        :return: List of position dictionaries or None if failed
+        """
+        
+        endpoint = f"/accounts/{account_id}/positions"  # Construct endpoint path
+        result = self.make_request("GET", endpoint)  # Make GET request to positions endpoint
+        if result and isinstance(result, list):  # Verify if result is a list
+            return result  # Return list of positions
+        return None  # Return None if not a list
+
+
 def create_api_client(authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2) -> APIClient:
     """
     Factory function to create an APIClient instance.
