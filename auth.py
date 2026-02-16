@@ -121,6 +121,21 @@ class Authenticator:  # Authentication handler class
             return False  # Return failure
 
 
+    def is_token_valid(self) -> bool:
+        """
+        Verifies if the current access token is valid and not expired.
+        
+        :param: None
+        :return: True if token is valid, False otherwise
+        """
+        
+        if not self.access_token:  # Verify if token exists
+            return False  # Return False if no token
+        if time.time() >= self.token_expiry:  # Verify if token is expired
+            return False  # Return False if expired
+        return True  # Return True if token is valid
+
+
 def create_authenticator(api_key: str, api_secret: str, base_url: str) -> Authenticator:
     """
     Factory function to create and initialize an Authenticator instance.
