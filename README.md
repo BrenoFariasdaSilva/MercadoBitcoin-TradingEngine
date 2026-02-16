@@ -199,3 +199,49 @@ make dependencies
 ```
 
 The `Makefile` target `dependencies` will create the `venv` (if missing) and install packages from `requirements.txt`.
+
+## Environment variables and `.env` template
+
+This repository includes a `.env.example` file containing the required variables. The application uses `os.getenv()` to read environment variables at runtime; the repository does not automatically load `.env` files. You must either export the variables in your shell/session, or create a `.env` file and load it into the environment before running.
+
+Common steps:
+
+- Copy the template to `.env` and edit the values:
+
+```bash
+cp .env.example .env
+```
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+- Edit `.env` with your API key and secret.
+
+- Load `.env` into your shell session (examples):
+
+- POSIX shells (bash/zsh):
+
+```bash
+set -a
+source .env
+set +a
+# now run
+make run
+```
+
+- Windows PowerShell (loads `.env` entries into the session environment):
+
+```powershell
+Get-Content .env | ForEach-Object {
+  if ($_ -and -not ($_ -match '^\s*#')) {
+    $parts = $_ -split '=',2
+    if ($parts.Count -eq 2) { $name = $parts[0].Trim(); $value = $parts[1].Trim(); $env:$name = $value }
+  }
+}
+make run
+```
+
+Note: the application itself does not parse `.env` automatically; the commands above export variables into the shell process so that `main.py` can read them via `os.getenv()`.
