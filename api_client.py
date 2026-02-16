@@ -274,6 +274,20 @@ class APIClient:  # API client class for Mercado Bitcoin
         return self.make_request("POST", endpoint, data=order_data)  # Make POST request to place order
 
 
+    def cancel_order(self, account_id: str, symbol: str, order_id: str) -> Optional[Dict]:
+        """
+        Cancels an existing order.
+        
+        :param account_id: Account identifier
+        :param symbol: Trading pair symbol (e.g., BTC-BRL)
+        :param order_id: Order identifier
+        :return: Cancellation response or None if failed
+        """
+        
+        endpoint = f"/accounts/{account_id}/{symbol}/orders/{order_id}"  # Construct endpoint path
+        return self.make_request("DELETE", endpoint)  # Make DELETE request to cancel order
+
+
 def create_api_client(authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2) -> APIClient:
     """
     Factory function to create an APIClient instance.
