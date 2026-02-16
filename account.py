@@ -71,6 +71,24 @@ class AccountManager:
         self.accounts_cache: Optional[List[Dict]] = None  # Cache for accounts list
 
 
+    def get_available_balance(self, symbol: str) -> float:
+        """
+        Returns available balance for a specific symbol.
+        
+        :param symbol: Currency symbol (e.g., BTC, BRL)
+        :return: Available balance as float, 0.0 if not found
+        """
+        
+        balance = self.get_balance(symbol)  # Get balance for symbol
+        if balance:  # Verify if balance exists
+            available = balance.get("available", "0")  # Get available amount
+            try:  # Attempt to convert to float
+                return float(available)  # Return available balance as float
+            except ValueError:  # Handle conversion error
+                return 0.0  # Return 0.0 on error
+        return 0.0  # Return 0.0 if balance not found
+
+
     def get_total_balance(self, symbol: str) -> float:
         """
         Returns total balance for a specific symbol.
