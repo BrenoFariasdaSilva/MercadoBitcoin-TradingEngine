@@ -141,3 +141,21 @@ def validate_config():
         return False  # Return False if not set
     return True  # Return True if all required values are set
 
+
+def get_config_summary():
+    """
+    Returns a summary of current configuration (without sensitive data).
+    
+    :param: None
+    :return: Dictionary containing configuration summary
+    """
+    
+    return {  # Return configuration dictionary
+        "base_url": Config.BASE_URL,  # Base URL
+        "timeout": Config.TIMEOUT,  # Timeout value
+        "verification_interval": Config.VERIFICATION_INTERVAL,  # Verify interval
+        "symbols": Config.SYMBOLS,  # Monitored symbols
+        "primary_symbol": Config.PRIMARY_SYMBOL,  # Primary symbol
+        "api_key_set": bool(Config.API_KEY),  # Whether API key is set
+        "api_secret_set": bool(Config.API_SECRET),  # Whether API secret is set
+    }
