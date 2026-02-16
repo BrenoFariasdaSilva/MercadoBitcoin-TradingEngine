@@ -288,3 +288,21 @@ The required Python packages are listed in `requirements.txt`:
 ### Dataset - Optional
 
 This project does not require any external dataset to run. The section is retained for compatibility but no dataset-related commands are implemented in the repository.
+
+## Usage
+
+In order to run the project, run the following command:
+
+```bash
+make run
+```
+
+Behavioral notes:
+
+- Ensure `MB_API_KEY` and `MB_API_SECRET` are set before running; `main.py` will fail `validate_config()` otherwise.
+- `main.py` redirects `stdout`/`stderr` to `./Logs/main.log` using `Logger.Logger` and also prints colored output to the terminal when supported.
+- The trading bot will:
+  - Authenticate using OAuth2 client credentials with `${BASE_URL}/oauth2/token`.
+  - Query account and balance information and compute a weighted average purchase price from past buy executions.
+  - Enter a loop that every `Config.VERIFICATION_INTERVAL` (default 60 seconds) fetches the ticker for `Config.PRIMARY_SYMBOL` (default `BTC-BRL`) and evaluates buy/sell rules.
+  - Place market `buy` orders by specifying `cost` (BRL) and market `sell` orders by specifying `qty` (BTC) via `APIClient.place_order`.
