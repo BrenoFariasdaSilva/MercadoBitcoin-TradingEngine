@@ -136,6 +136,19 @@ class Authenticator:  # Authentication handler class
         return True  # Return True if token is valid
 
 
+    def ensure_authenticated(self) -> bool:
+        """
+        Ensures that a valid token is available, refreshing if necessary.
+        
+        :param: None
+        :return: True if authentication is valid or refresh successful, False otherwise
+        """
+        
+        if self.is_token_valid():  # Verify if current token is valid
+            return True  # Return True if already valid
+        return self.authenticate()  # Otherwise attempt to authenticate
+
+
 def create_authenticator(api_key: str, api_secret: str, base_url: str) -> Authenticator:
     """
     Factory function to create and initialize an Authenticator instance.
