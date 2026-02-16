@@ -391,6 +391,18 @@ class TradingBot:
             time.sleep(self.config.VERIFICATION_INTERVAL)  # Wait for next cycle
 
 
+    def stop(self) -> None:
+        """
+        Stops the trading bot.
+        
+        :param: None
+        :return: None
+        """
+        
+        self.is_running = False  # Set running state to False
+        self.log("Trading bot stopped")  # Log bot stop
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
