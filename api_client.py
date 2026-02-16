@@ -57,7 +57,8 @@ class APIClient:  # API client class for Mercado Bitcoin
     :param: None
     :return: None
     """
-    
+
+
     def __init__(self, authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2):
         """
         Initializes the API client.
@@ -75,6 +76,60 @@ class APIClient:  # API client class for Mercado Bitcoin
         self.timeout = timeout  # Store timeout value
         self.max_retries = max_retries  # Store max retries
         self.retry_delay = retry_delay  # Store retry delay
+
+
+    def make_request(self, method: str, endpoint: str, params: Optional[Dict] = None, data: Optional[Dict] = None, authenticated: bool = True) -> Optional[Dict]:
+        """
+        Makes an HTTP request with retry logic.
+        
+        :param method: HTTP method (GET, POST, DELETE)
+        :param endpoint: API endpoint path
+        :param params: URL query parameters
+        :param data: Request body data
+        :param authenticated: Whether to include authentication headers
+        :return: Response JSON data or None if failed
+        """
+        
+        url = f"{self.base_url}{endpoint}"  # Construct full URL
+        headers = {}  # Initialize headers dictionary
+        
+        if authenticated:  # Verify if authentication is required
+            auth_headers = self.authenticator.get_auth_headers()  # Get authentication headers
+            headers.update(auth_headers)  # Add authentication headers
+        
+        headers["Content-Type"] = "application/json"  # Set content type header
+        
+        for attempt in range(self.max_retries):  # Retry loop
+            try:  # Attempt request
+                if method == "GET":  # Handle GET requests
+                    response = requests.get(url, headers=headers, params=params, timeout=self.timeout)  # Send GET request
+                elif method == "POST":  # Handle POST requests
+                    response = requests.post(url, headers=headers, json=data, timeout=self.timeout)  # Send POST request
+                elif method == "DELETE":  # Handle DELETE requests
+                    response = requests.delete(url, headers=headers, params=params, timeout=self.timeout)  # Send DELETE request
+                else:  # Unsupported method
+                    return None  # Return None for unsupported methods
+                
+                if response.status_code == 200:  # Verify for success
+                    return response.json()  # Return parsed JSON response
+                elif response.status_code == 401:  # Verify for unauthorized
+                    if authenticated:  # If request was authenticated
+                        self.authenticator.authenticate()  # Re-authenticate
+                        continue  # Retry request
+                    return None  # Return None if not authenticated
+                else:  # Other error status codes
+                    if attempt < self.max_retries - 1:  # Verify if retries remain
+                        time.sleep(self.retry_delay)  # Wait before retry
+                        continue  # Retry request
+                    return None  # Return None after exhausting retries
+                    
+            except Exception:  # Catch any exceptions
+                if attempt < self.max_retries - 1:  # Verify if retries remain
+                    time.sleep(self.retry_delay)  # Wait before retry
+                    continue  # Retry request
+                return None  # Return None after exhausting retries
+        
+        return None  # Return None if all retries failed
 
 
 def create_api_client(authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2) -> APIClient:
