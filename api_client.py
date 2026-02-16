@@ -57,7 +57,8 @@ class APIClient:  # API client class for Mercado Bitcoin
     :param: None
     :return: None
     """
-    
+
+
     def __init__(self, authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2):
         """
         Initializes the API client.
@@ -75,7 +76,8 @@ class APIClient:  # API client class for Mercado Bitcoin
         self.timeout = timeout  # Store timeout value
         self.max_retries = max_retries  # Store max retries
         self.retry_delay = retry_delay  # Store retry delay
-    
+
+
     def make_request(self, method: str, endpoint: str, params: Optional[Dict] = None, data: Optional[Dict] = None, authenticated: bool = True) -> Optional[Dict]:
         """
         Makes an HTTP request with retry logic.
@@ -128,181 +130,6 @@ class APIClient:  # API client class for Mercado Bitcoin
                 return None  # Return None after exhausting retries
         
         return None  # Return None if all retries failed
-    
-    def get_accounts(self) -> Optional[List[Dict]]:
-        """
-        Retrieves list of accounts.
-        
-        :param: None
-        :return: List of account dictionaries or None if failed
-        """
-        
-        result = self.make_request("GET", "/accounts")  # Make GET request to accounts endpoint
-        if result and isinstance(result, list):  # Verify if result is a list
-            return result  # Return list of accounts
-        return None  # Return None if not a list
-    
-    def get_balances(self, account_id: str) -> Optional[List[Dict]]:
-        """
-        Retrieves balances for a specific account.
-        
-        :param account_id: Account identifier
-        :return: List of balance dictionaries or None if failed
-        """
-        
-        endpoint = f"/accounts/{account_id}/balances"  # Construct endpoint path
-        result = self.make_request("GET", endpoint)  # Make GET request to balances endpoint
-        if result and isinstance(result, list):  # Verify if result is a list
-            return result  # Return list of balances
-        return None  # Return None if not a list
-    
-    def get_ticker(self, symbol: str) -> Optional[Dict]:
-        """
-        Retrieves ticker information for a symbol.
-        
-        :param symbol: Trading pair symbol (e.g., BTC-BRL)
-        :return: Ticker dictionary or None if failed
-        """
-        
-        endpoint = f"/{symbol}/ticker"  # Construct endpoint path
-        return self.make_request("GET", endpoint, authenticated=False)  # Make GET request to ticker endpoint
-    
-    def get_tickers(self) -> Optional[List[Dict]]:
-        """
-        Retrieves ticker information for all symbols.
-        
-        :param: None
-        :return: List of ticker dictionaries or None if failed
-        """
-        
-        result = self.make_request("GET", "/tickers", authenticated=False)  # Make GET request to tickers endpoint
-        if result and isinstance(result, list):  # Verify if result is a list
-            return result  # Return list of tickers
-        return None  # Return None if not a list
-    
-    def get_orderbook(self, symbol: str) -> Optional[Dict]:
-        """
-        Retrieves order book for a symbol.
-        
-        :param symbol: Trading pair symbol (e.g., BTC-BRL)
-        :return: Order book dictionary or None if failed
-        """
-        
-        endpoint = f"/{symbol}/orderbook"  # Construct endpoint path
-        return self.make_request("GET", endpoint, authenticated=False)  # Make GET request to orderbook endpoint
-    
-    def get_orders(self, account_id: str, symbol: str) -> Optional[List[Dict]]:
-        """
-        Retrieves orders for a specific account and symbol.
-        
-        :param account_id: Account identifier
-        :param symbol: Trading pair symbol (e.g., BTC-BRL)
-        :return: List of order dictionaries or None if failed
-        """
-        
-        endpoint = f"/accounts/{account_id}/{symbol}/orders"  # Construct endpoint path
-        result = self.make_request("GET", endpoint)  # Make GET request to orders endpoint
-        if result and isinstance(result, list):  # Verify if result is a list
-            return result  # Return list of orders
-        return None  # Return None if not a list
-    
-    def get_all_orders(self, account_id: str) -> Optional[Dict]:
-        """
-        Retrieves all orders for a specific account.
-        
-        :param account_id: Account identifier
-        :return: Dictionary containing all orders or None if failed
-        """
-        
-        endpoint = f"/accounts/{account_id}/orders"  # Construct endpoint path
-        return self.make_request("GET", endpoint)  # Make GET request to all orders endpoint
-    
-    def get_order(self, account_id: str, symbol: str, order_id: str) -> Optional[Dict]:
-        """
-        Retrieves a specific order by ID.
-        
-        :param account_id: Account identifier
-        :param symbol: Trading pair symbol (e.g., BTC-BRL)
-        :param order_id: Order identifier
-        :return: Order dictionary or None if failed
-        """
-        
-        endpoint = f"/accounts/{account_id}/{symbol}/orders/{order_id}"  # Construct endpoint path
-        return self.make_request("GET", endpoint)  # Make GET request to order endpoint
-    
-    def place_order(self, account_id: str, symbol: str, side: str, order_type: str, qty: Optional[str] = None, cost: Optional[float] = None, limit_price: Optional[float] = None) -> Optional[Dict]:
-        """
-        Places a new order.
-        
-        :param account_id: Account identifier
-        :param symbol: Trading pair symbol (e.g., BTC-BRL)
-        :param side: Order side (buy or sell)
-        :param order_type: Order type (market or limit)
-        :param qty: Order quantity (optional)
-        :param cost: Order cost in quote currency (optional)
-        :param limit_price: Limit price for limit orders (optional)
-        :return: Order placement response or None if failed
-        """
-        
-        endpoint = f"/accounts/{account_id}/{symbol}/orders"  # Construct endpoint path
-        
-        order_data = {  # Construct order data
-            "side": side,  # Order side
-            "type": order_type,  # Order type
-        }
-        
-        if qty is not None:  # Verify if quantity is provided
-            order_data["qty"] = qty  # Add quantity to order data
-        
-        if cost is not None:  # Verify if cost is provided
-            order_data["cost"] = str(cost)  # Add cost to order data as string
-        
-        if limit_price is not None:  # Verify if limit price is provided
-            order_data["limitPrice"] = str(limit_price)  # Add limit price to order data as string
-        
-        return self.make_request("POST", endpoint, data=order_data)  # Make POST request to place order
-    
-    def cancel_order(self, account_id: str, symbol: str, order_id: str) -> Optional[Dict]:
-        """
-        Cancels an existing order.
-        
-        :param account_id: Account identifier
-        :param symbol: Trading pair symbol (e.g., BTC-BRL)
-        :param order_id: Order identifier
-        :return: Cancellation response or None if failed
-        """
-        
-        endpoint = f"/accounts/{account_id}/{symbol}/orders/{order_id}"  # Construct endpoint path
-        return self.make_request("DELETE", endpoint)  # Make DELETE request to cancel order
-    
-    def get_positions(self, account_id: str) -> Optional[List[Dict]]:
-        """
-        Retrieves positions for a specific account.
-        
-        :param account_id: Account identifier
-        :return: List of position dictionaries or None if failed
-        """
-        
-        endpoint = f"/accounts/{account_id}/positions"  # Construct endpoint path
-        result = self.make_request("GET", endpoint)  # Make GET request to positions endpoint
-        if result and isinstance(result, list):  # Verify if result is a list
-            return result  # Return list of positions
-        return None  # Return None if not a list
-    
-    def get_executions(self, account_id: str, symbol: str, order_id: str) -> Optional[List[Dict]]:
-        """
-        Retrieves executions for a specific order.
-        
-        :param account_id: Account identifier
-        :param symbol: Trading pair symbol (e.g., BTC-BRL)
-        :param order_id: Order identifier
-        :return: List of execution dictionaries or None if failed
-        """
-        
-        order = self.get_order(account_id, symbol, order_id)  # Get order details
-        if order and "executions" in order:  # Verify if order has executions
-            return order["executions"]  # Return executions list
-        return None  # Return None if no executions found
 
 
 def create_api_client(authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2) -> APIClient:
