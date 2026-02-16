@@ -375,6 +375,22 @@ class TradingBot:
             self.log(f"Error in trading cycle: {str(e)}")  # Log error
 
 
+    def run(self) -> None:
+        """
+        Starts the trading bot main loop.
+        
+        :param: None
+        :return: None
+        """
+        
+        self.is_running = True  # Set running state to True
+        self.log("Trading bot started")  # Log bot start
+        
+        while self.is_running:  # Main loop
+            self.run_cycle()  # Run one cycle
+            time.sleep(self.config.VERIFICATION_INTERVAL)  # Wait for next cycle
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
