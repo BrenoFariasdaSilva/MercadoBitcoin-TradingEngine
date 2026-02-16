@@ -113,6 +113,31 @@ def verbose_output(true_string="", false_string=""):
         print(false_string)  # Output the false statement string
 
 
+def display_trading_rules():
+    """
+    Displays configured trading rules.
+
+    :param: None
+    :return: None
+    """
+
+    print(
+        f"{BackgroundColors.GREEN}Trading rules configured:{Style.RESET_ALL}"
+    )  # Output trading rules header
+    print(
+        f"{BackgroundColors.CYAN}  BUY 10% of BRL when price is 10% above average{Style.RESET_ALL}"
+    )  # Output buy rule 1
+    print(
+        f"{BackgroundColors.CYAN}  BUY 20% of BRL when price is 20% above average{Style.RESET_ALL}"
+    )  # Output buy rule 2
+    print(
+        f"{BackgroundColors.CYAN}  BUY 50% of BRL when price is 25% above average{Style.RESET_ALL}"
+    )  # Output buy rule 3
+    print(
+        f"{BackgroundColors.CYAN}  SELL 20% of BTC when price is 100% above average (double){Style.RESET_ALL}"
+    )  # Output sell rule
+
+
 def start_trading_bot(trading_bot):
     """
     Starts the trading bot loop and handles interrupts and errors.
