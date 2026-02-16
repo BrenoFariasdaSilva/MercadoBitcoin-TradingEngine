@@ -71,6 +71,17 @@ class AccountManager:
         self.accounts_cache: Optional[List[Dict]] = None  # Cache for accounts list
 
 
+    def set_account_id(self, account_id: str) -> None:
+        """
+        Sets the account ID to use for operations.
+        
+        :param account_id: Account identifier
+        :return: None
+        """
+        
+        self.account_id = account_id  # Set account ID
+
+
     def get_balances(self) -> Optional[List[Dict]]:
         """
         Retrieves balances for the current account.
