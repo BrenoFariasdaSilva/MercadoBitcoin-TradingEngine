@@ -16,15 +16,15 @@ Project-Description.
 
 <div align="center">
 
-![GitHub Code Size in Bytes](https://img.shields.io/github/languages/code-size/BrenoFariasdaSilva/Template-Project)
-![GitHub Commits](https://img.shields.io/github/commit-activity/t/BrenoFariasDaSilva/Template-Project/main)
-![GitHub Last Commit](https://img.shields.io/github/last-commit/BrenoFariasdaSilva/Template-Project)
-![GitHub Forks](https://img.shields.io/github/forks/BrenoFariasDaSilva/Template-Project)
-![GitHub Language Count](https://img.shields.io/github/languages/count/BrenoFariasDaSilva/Template-Project)
-![GitHub License](https://img.shields.io/github/license/BrenoFariasdaSilva/Template-Project)
-![GitHub Stars](https://img.shields.io/github/stars/BrenoFariasdaSilva/Template-Project)
-![GitHub Contributors](https://img.shields.io/github/contributors/BrenoFariasdaSilva/Template-Project)
-![GitHub Created At](https://img.shields.io/github/created-at/BrenoFariasdaSilva/Template-Project)
+![GitHub Code Size in Bytes](https://img.shields.io/github/languages/code-size/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Commits](https://img.shields.io/github/commit-activity/t/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine/main)
+![GitHub Last Commit](https://img.shields.io/github/last-commit/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Forks](https://img.shields.io/github/forks/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Language Count](https://img.shields.io/github/languages/count/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine)
+![GitHub License](https://img.shields.io/github/license/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Stars](https://img.shields.io/github/stars/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Contributors](https://img.shields.io/github/contributors/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Created At](https://img.shields.io/github/created-at/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
 ![wakatime](https://wakatime.com/badge/github/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine.svg)
 
 </div>
@@ -72,7 +72,7 @@ Bullet points of the requirements.
 
    ```bash
    git clone https://github.com/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine.git
-   cd Template-Project
+   cd MercadoBitcoin-TradingEngine
    ```
 
 ## Installation:
@@ -112,7 +112,7 @@ Bullet points of the requirements.
 
 ### Dataset - Optional
 
-1. Download the dataset from [WEBSITE-HERE]() and place it in this project directory `(/Template-Project)` and run the following command:
+1. Download the dataset from [WEBSITE-HERE]() and place it in this project directory `(/MercadoBitcoin-TradingEngine)` and run the following command:
 
    ```bash
    make dataset
