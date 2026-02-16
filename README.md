@@ -1,6 +1,6 @@
 <div align="center">
   
-# [Template-Project.](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine) <img src="Icon-Image-URL"  width="3%" height="3%">
+# [MercadoBitcoin-TradingEngine.](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine) <img src="Icon-Image-URL"  width="3%" height="3%">
 
 </div>
 
@@ -25,7 +25,7 @@ Project-Description.
 ![GitHub Stars](https://img.shields.io/github/stars/BrenoFariasdaSilva/Template-Project)
 ![GitHub Contributors](https://img.shields.io/github/contributors/BrenoFariasdaSilva/Template-Project)
 ![GitHub Created At](https://img.shields.io/github/created-at/BrenoFariasdaSilva/Template-Project)
-![wakatime](https://wakatime.com/badge/github/BrenoFariasdaSilva/Template-Project.svg)
+![wakatime](https://wakatime.com/badge/github/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine.svg)
 
 </div>
 
@@ -36,7 +36,7 @@ Project-Description.
 </div>
 
 ## Table of Contents
-- [Template-Project. ](#template-project-)
+- [MercadoBitcoin-TradingEngine. ](#mercadobitcoin-tradingengine-)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Requirements](#requirements)
@@ -71,7 +71,7 @@ Bullet points of the requirements.
 1. Clone the repository with the following command:
 
    ```bash
-   git clone https://github.com/BrenoFariasDaSilva/Template-Project.git
+   git clone https://github.com/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine.git
    cd Template-Project
    ```
 
