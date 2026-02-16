@@ -328,6 +328,39 @@ class TradingBot:
             return False  # Return failure
 
 
+    def evaluate_and_execute(self) -> None:
+        """
+        Evaluates trading rules and executes orders if conditions are met.
+        
+        :param: None
+        :return: None
+        """
+        
+        current_price = self.get_current_price(self.config.PRIMARY_SYMBOL)  # Get current price
+        if not current_price:  # Verify if price retrieved
+            self.log("Failed to retrieve current price")  # Log failure
+            return  # Exit if price not available
+        
+        average_price = self.get_average_price()  # Get average purchase price
+        if not average_price:  # Verify if average price available
+            self.log("No average price available (no previous purchases)")  # Log no average
+            return  # Exit if no average price
+        
+        self.log(f"Current: {current_price:.2f} BRL | Average: {average_price:.2f} BRL")  # Log prices
+        
+        buy_action = self.verify_buy_rules(current_price, average_price)  # Verify buy rules
+        if buy_action:  # Verify if buy action triggered
+            self.log(f"BUY RULE TRIGGERED: {buy_action['reason']}")  # Log buy trigger
+            self.execute_buy(buy_action["amount_percentage"], buy_action["rule_key"])  # Execute buy
+            return  # Exit after executing buy
+        
+        sell_action = self.verify_sell_rules(current_price, average_price)  # Verify sell rules
+        if sell_action:  # Verify if sell action triggered
+            self.log(f"SELL RULE TRIGGERED: {sell_action['reason']}")  # Log sell trigger
+            self.execute_sell(sell_action["amount_percentage"], sell_action["rule_key"])  # Execute sell
+            return  # Exit after executing sell
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
