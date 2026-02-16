@@ -149,6 +149,22 @@ class Authenticator:  # Authentication handler class
         return self.authenticate()  # Otherwise attempt to authenticate
 
 
+    def get_auth_headers(self) -> Dict[str, str]:
+        """
+        Returns authorization headers for API requests.
+        
+        :param: None
+        :return: Dictionary containing authorization headers
+        """
+        
+        if not self.ensure_authenticated():  # Ensure valid authentication
+            return {}  # Return empty dict if authentication fails
+        
+        return {  # Return authorization headers
+            "Authorization": f"{self.token_type} {self.access_token}",  # Bearer token header
+        }
+
+
 def create_authenticator(api_key: str, api_secret: str, base_url: str) -> Authenticator:
     """
     Factory function to create and initialize an Authenticator instance.
