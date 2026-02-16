@@ -361,6 +361,20 @@ class TradingBot:
             return  # Exit after executing sell
 
 
+    def run_cycle(self) -> None:
+        """
+        Runs a single monitoring and trading cycle.
+        
+        :param: None
+        :return: None
+        """
+        
+        try:  # Attempt to run cycle
+            self.evaluate_and_execute()  # Evaluate rules and execute trades
+        except Exception as e:  # Catch any exceptions
+            self.log(f"Error in trading cycle: {str(e)}")  # Log error
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
