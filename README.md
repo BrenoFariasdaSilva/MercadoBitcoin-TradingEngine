@@ -170,3 +170,14 @@ Module documentation (responsibilities, exported classes and public functions, i
   - `MB_API_SECRET` — API secret for Mercado Bitcoin (required).
 - Default API base URL: `https://api.mercadobitcoin.net/api/v4` (set in `config.APIConfig.BASE_URL`).
 - Network connectivity is required to reach the API endpoints and to authenticate.
+
+## Setup
+
+### Clone the repository
+
+1. Clone the repository with the following command:
+
+   ```bash
+   git clone https://github.com/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine.git
+   cd MercadoBitcoin-TradingEngine
+   ```
