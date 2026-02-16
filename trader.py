@@ -282,6 +282,52 @@ class TradingBot:
             return False  # Return failure
 
 
+    def execute_sell(self, amount_percentage: float, rule_key: str) -> bool:
+        """
+        Executes a sell order for a percentage of available BTC balance.
+        
+        :param amount_percentage: Percentage of balance to sell (0.20 = 20%)
+        :param rule_key: Rule identifier for duplicate prevention
+        :return: True if order placed successfully, False otherwise
+        """
+        
+        available_btc = self.account_manager.get_available_balance(self.config.CRYPTO)  # Get available BTC balance
+        
+        if available_btc <= 0:  # Verify if balance available
+            self.log(f"Insufficient BTC balance: {available_btc}")  # Log insufficient balance
+            return False  # Return failure
+        
+        qty = available_btc * amount_percentage  # Calculate quantity to sell
+        
+        if qty < 0.00001:  # Verify minimum order quantity
+            self.log(f"Order quantity too low: {qty} BTC")  # Log low quantity
+            return False  # Return failure
+        
+        account_id = self.account_manager.get_account_id()  # Get account ID
+        if not account_id:  # Verify if account ID available
+            self.log("Account ID not available")  # Log missing account ID
+            return False  # Return failure
+        
+        self.log(f"Executing SELL: {qty:.8f} BTC ({amount_percentage*100:.0f}% of balance)")  # Log sell action
+        
+        result = self.api_client.place_order(  # Place market sell order
+            account_id=account_id,  # Account ID
+            symbol=self.config.PRIMARY_SYMBOL,  # Trading pair
+            side="sell",  # Sell side
+            order_type="market",  # Market order type
+            qty=str(qty)  # Quantity as string
+        )
+        
+        if result:  # Verify if order placed successfully
+            order_id = result.get("orderId")  # Get order ID
+            self.log(f"Sell order placed successfully. Order ID: {order_id}")  # Log success
+            self.executed_rules.add(rule_key)  # Mark rule as executed
+            return True  # Return success
+        else:  # Order placement failed
+            self.log("Sell order failed")  # Log failure
+            return False  # Return failure
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
