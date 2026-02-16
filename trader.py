@@ -95,6 +95,25 @@ class TradingBot:
             print(message)  # Print to console
 
 
+    def get_current_price(self, symbol: str) -> Optional[float]:
+        """
+        Retrieves current market price for a symbol.
+        
+        :param symbol: Trading pair symbol (e.g., BTC-BRL)
+        :return: Current price as float or None if failed
+        """
+        
+        ticker = self.api_client.get_ticker(symbol)  # Get ticker data
+        if ticker:  # Verify if ticker retrieved
+            last_price = ticker.get("last")  # Get last traded price
+            if last_price:  # Verify if price exists
+                try:  # Attempt to convert to float
+                    return float(last_price)  # Return price as float
+                except ValueError:  # Handle conversion error
+                    return None  # Return None on error
+        return None  # Return None if ticker not available
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
