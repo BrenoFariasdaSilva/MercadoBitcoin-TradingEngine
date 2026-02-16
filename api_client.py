@@ -78,6 +78,20 @@ class APIClient:  # API client class for Mercado Bitcoin
         self.retry_delay = retry_delay  # Store retry delay
 
 
+    def get_tickers(self) -> Optional[List[Dict]]:
+        """
+        Retrieves ticker information for all symbols.
+        
+        :param: None
+        :return: List of ticker dictionaries or None if failed
+        """
+        
+        result = self.make_request("GET", "/tickers", authenticated=False)  # Make GET request to tickers endpoint
+        if result and isinstance(result, list):  # Verify if result is a list
+            return result  # Return list of tickers
+        return None  # Return None if not a list
+
+
     def get_ticker(self, symbol: str) -> Optional[Dict]:
         """
         Retrieves ticker information for a symbol.
