@@ -58,7 +58,8 @@ class Authenticator:  # Authentication handler class
     :param: None
     :return: None
     """
-    
+
+
     def __init__(self, api_key: str, api_secret: str, base_url: str):
         """
         Initializes the Authenticator with credentials.
@@ -75,6 +76,49 @@ class Authenticator:  # Authentication handler class
         self.access_token: Optional[str] = None  # Initialize access token as None
         self.token_expiry: float = 0.0  # Initialize token expiry timestamp
         self.token_type: str = "Bearer"  # Default token type
+
+
+    def authenticate(self) -> bool:
+        """
+        Authenticates with the API and obtains an access token.
+        
+        :param: None
+        :return: True if authentication successful, False otherwise
+        """
+        
+        token_url = f"{self.base_url}/oauth2/token"  # Construct token endpoint URL
+        
+        payload = {  # Prepare authentication payload
+            "grant_type": "client_credentials",  # OAuth2 grant type
+        }
+        
+        auth = (self.api_key, self.api_secret)  # HTTP Basic Auth tuple
+        
+        headers = {  # Prepare request headers
+            "Content-Type": "application/x-www-form-urlencoded",  # Content type for form data
+        }
+        
+        try:  # Attempt authentication request
+            response = requests.post(  # Send POST request to token endpoint
+                token_url,  # Token URL
+                data=payload,  # Form data payload
+                auth=auth,  # Basic authentication
+                headers=headers,  # Request headers
+                timeout=30  # Request timeout
+            )
+            
+            if response.status_code == 200:  # Verify if request was successful
+                data = response.json()  # Parse JSON response
+                self.access_token = data.get("access_token")  # Extract access token
+                expires_in = data.get("expires_in", 3600)  # Extract expiry time (default 1 hour)
+                self.token_type = data.get("token_type", "Bearer")  # Extract token type
+                self.token_expiry = time.time() + expires_in - 300  # Set expiry with 5-minute buffer
+                return True  # Return success
+            else:  # Authentication failed
+                return False  # Return failure
+                
+        except Exception:  # Catch any exceptions
+            return False  # Return failure
 
 
 def create_authenticator(api_key: str, api_secret: str, base_url: str) -> Authenticator:
