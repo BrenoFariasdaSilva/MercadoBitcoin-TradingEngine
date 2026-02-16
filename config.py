@@ -121,3 +121,23 @@ class Config:  # Main configuration class
     
     RULES = TradingRules  # Trading rules reference
 
+
+# Functions Definitions:
+
+
+def validate_config():
+    """
+    Validates that all required configuration values are set.
+    
+    :param: None
+    :return: True if configuration is valid, False otherwise
+    """
+    
+    if not Config.API_KEY:  # Verify if API key is set
+        return False  # Return False if not set
+    if not Config.API_SECRET:  # Verify if API secret is set
+        return False  # Return False if not set
+    if not Config.BASE_URL:  # Verify if base URL is set
+        return False  # Return False if not set
+    return True  # Return True if all required values are set
+
