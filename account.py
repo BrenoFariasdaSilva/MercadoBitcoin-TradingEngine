@@ -71,6 +71,21 @@ class AccountManager:
         self.accounts_cache: Optional[List[Dict]] = None  # Cache for accounts list
 
 
+    def get_balances(self) -> Optional[List[Dict]]:
+        """
+        Retrieves balances for the current account.
+        
+        :param: None
+        :return: List of balance dictionaries or None if failed
+        """
+        
+        account_id = self.get_account_id()  # Get account ID
+        if not account_id:  # Verify if account ID is available
+            return None  # Return None if no account ID
+        
+        return self.api_client.get_balances(account_id)  # Request balances from API
+
+
     def get_balance(self, symbol: str) -> Optional[Dict]:
         """
         Retrieves balance for a specific symbol.
