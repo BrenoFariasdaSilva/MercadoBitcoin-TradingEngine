@@ -78,6 +78,20 @@ class APIClient:  # API client class for Mercado Bitcoin
         self.retry_delay = retry_delay  # Store retry delay
 
 
+    def cancel_order(self, account_id: str, symbol: str, order_id: str) -> Optional[Dict]:
+        """
+        Cancels an existing order.
+        
+        :param account_id: Account identifier
+        :param symbol: Trading pair symbol (e.g., BTC-BRL)
+        :param order_id: Order identifier
+        :return: Cancellation response or None if failed
+        """
+        
+        endpoint = f"/accounts/{account_id}/{symbol}/orders/{order_id}"  # Construct endpoint path
+        return self.make_request("DELETE", endpoint)  # Make DELETE request to cancel order
+
+
     def place_order(self, account_id: str, symbol: str, side: str, order_type: str, qty: Optional[str] = None, cost: Optional[float] = None, limit_price: Optional[float] = None) -> Optional[Dict]:
         """
         Places a new order.
