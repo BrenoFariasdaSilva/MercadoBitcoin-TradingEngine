@@ -161,3 +161,12 @@ Module documentation (responsibilities, exported classes and public functions, i
     - Validates `Config` (requires `MB_API_KEY` and `MB_API_SECRET`).
     - Initializes `Authenticator`, `APIClient`, `AccountManager`, prints balances and average BTC price, creates `TradingBot` and starts the trading loop (`trading_bot.run()`).
     - Provides utility helpers: `display_configuration_summary()`, `display_trading_rules()`, `display_account_balances()`, `calculate_execution_time()`, `play_sound()` (skipped on Windows).
+
+## Requirements
+
+- Python 3.8 or higher.
+- The code reads API credentials from environment variables at runtime. A template is provided in `.env.example`.
+  - `MB_API_KEY` — API key for Mercado Bitcoin (required).
+  - `MB_API_SECRET` — API secret for Mercado Bitcoin (required).
+- Default API base URL: `https://api.mercadobitcoin.net/api/v4` (set in `config.APIConfig.BASE_URL`).
+- Network connectivity is required to reach the API endpoints and to authenticate.
