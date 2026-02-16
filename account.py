@@ -71,6 +71,21 @@ class AccountManager:
         self.accounts_cache: Optional[List[Dict]] = None  # Cache for accounts list
 
 
+    def get_orders_for_symbol(self, symbol: str) -> Optional[List[Dict]]:
+        """
+        Retrieves orders for a specific symbol.
+        
+        :param symbol: Trading pair symbol (e.g., BTC-BRL)
+        :return: List of order dictionaries or None if failed
+        """
+        
+        account_id = self.get_account_id()  # Get account ID
+        if not account_id:  # Verify if account ID is available
+            return None  # Return None if no account ID
+        
+        return self.api_client.get_orders(account_id, symbol)  # Request orders from API
+
+
     def calculate_average_price(self, crypto_symbol: str, trading_pair: str) -> Optional[float]:
         """
         Calculates average purchase price for a cryptocurrency from executions.
