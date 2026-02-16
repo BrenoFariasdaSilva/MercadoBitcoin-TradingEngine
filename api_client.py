@@ -78,6 +78,20 @@ class APIClient:  # API client class for Mercado Bitcoin
         self.retry_delay = retry_delay  # Store retry delay
 
 
+    def get_accounts(self) -> Optional[List[Dict]]:
+        """
+        Retrieves list of accounts.
+        
+        :param: None
+        :return: List of account dictionaries or None if failed
+        """
+        
+        result = self.make_request("GET", "/accounts")  # Make GET request to accounts endpoint
+        if result and isinstance(result, list):  # Verify if result is a list
+            return result  # Return list of accounts
+        return None  # Return None if not a list
+
+
     def make_request(self, method: str, endpoint: str, params: Optional[Dict] = None, data: Optional[Dict] = None, authenticated: bool = True) -> Optional[Dict]:
         """
         Makes an HTTP request with retry logic.
