@@ -114,6 +114,25 @@ class TradingBot:
         return None  # Return None if ticker not available
 
 
+    def update_average_price(self) -> bool:
+        """
+        Updates the cached average purchase price.
+        
+        :param: None
+        :return: True if update successful, False otherwise
+        """
+        
+        avg_price = self.account_manager.calculate_average_price(  # Calculate average price
+            self.config.CRYPTO,  # Crypto symbol
+            self.config.PRIMARY_SYMBOL  # Trading pair
+        )
+        
+        if avg_price is not None:  # Verify if average price calculated
+            self.current_average_price = avg_price  # Update cached average price
+            return True  # Return success
+        return False  # Return failure
+
+
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
     """
     Factory function to create a TradingBot instance.
