@@ -96,3 +96,28 @@ class MonitoringConfig:  # Monitoring configuration constants
     CRYPTO_SYMBOL = "BTC"  # Cryptocurrency symbol
     FIAT_SYMBOL = "BRL"  # Fiat currency symbol
 
+
+class Config:  # Main configuration class
+    """
+    Main configuration class aggregating all settings.
+    
+    :param: None
+    :return: None
+    """
+    
+    API_KEY = os.getenv("MB_API_KEY", "")  # API key from environment variable
+    API_SECRET = os.getenv("MB_API_SECRET", "")  # API secret from environment variable
+    
+    BASE_URL = APIConfig.BASE_URL  # Base URL for API requests
+    TIMEOUT = APIConfig.TIMEOUT  # Request timeout
+    MAX_RETRIES = APIConfig.MAX_RETRIES  # Maximum retries
+    RETRY_DELAY = APIConfig.RETRY_DELAY  # Retry delay
+    
+    VERIFICATION_INTERVAL = MonitoringConfig.VERIFICATION_INTERVAL  # Price verification interval
+    SYMBOLS = MonitoringConfig.SYMBOLS_TO_MONITOR  # Symbols to monitor
+    PRIMARY_SYMBOL = MonitoringConfig.PRIMARY_SYMBOL  # Primary trading symbol
+    CRYPTO = MonitoringConfig.CRYPTO_SYMBOL  # Crypto symbol
+    FIAT = MonitoringConfig.FIAT_SYMBOL  # Fiat symbol
+    
+    RULES = TradingRules  # Trading rules reference
+
