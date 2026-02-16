@@ -1,49 +1,51 @@
 """
 ================================================================================
-<PROJECT OR SCRIPT TITLE>
+Mercado Bitcoin Automated Trading Bot
 ================================================================================
 Author      : Breno Farias da Silva
-Created     : <YYYY-MM-DD>
+Created     : 2026-02-16
 Description :
-    <Provide a concise and complete overview of what this script does.>
-    <Mention its purpose, scope, and relevance to the larger project.>
+    Automated trading bot for Mercado Bitcoin cryptocurrency exchange.
+    This bot monitors BTC prices and executes rule-based buy/sell orders
+    based on percentage differences from average purchase price.
 
     Key features include:
-        - <Feature 1 — e.g., automatic data loading and preprocessing>
-        - <Feature 2 — e.g., model training and evaluation>
-        - <Feature 3 — e.g., visualization or report generation>
-        - <Feature 4 — e.g., logging or notification system>
-        - <Feature 5 — e.g., integration with other modules or datasets>
+        - OAuth2 authentication with Mercado Bitcoin API v4
+        - Real-time price monitoring for BTC-BRL and BTC-USD
+        - Average purchase price calculation from order history
+        - Rule-based automatic buy orders (10%, 20%, 25% thresholds)
+        - Rule-based automatic sell orders (100% threshold)
+        - Duplicate execution prevention
+        - Safe balance verification before orders
 
 Usage:
-    1. <Explain any configuration steps before running, such as editing variables or paths.>
-    2. <Describe how to execute the script — typically via Makefile or Python.>
-        $ make <target>   or   $ python <script_name>.py
-    3. <List what outputs are expected or where results are saved.>
+    1. Set environment variables MB_API_KEY and MB_API_SECRET.
+    2. Run the script via Python or Makefile.
+        $ python main.py
+    3. Bot will continuously monitor and execute trades based on configured rules.
 
 Outputs:
-    - <Output file or directory 1 — e.g., results.csv>
-    - <Output file or directory 2 — e.g., Feature_Analysis/plots/>
-    - <Output file or directory 3 — e.g., logs/output.txt>
+    - ./Logs/main.log — Trading activity and decisions log
+    - Market orders executed on Mercado Bitcoin platform
 
 TODOs:
-    - <Add a task or improvement — e.g., implement CLI argument parsing.>
-    - <Add another improvement — e.g., extend support to Parquet files.>
-    - <Add optimization — e.g., parallelize evaluation loop.>
-    - <Add robustness — e.g., error handling or data validation.>
+    - Add support for multiple cryptocurrencies
+    - Implement stop-loss functionality
+    - Add performance metrics and reporting
+    - Implement backtesting capabilities
 
 Dependencies:
-    - Python >= <version>
-    - <Library 1 — e.g., pandas>
-    - <Library 2 — e.g., numpy>
-    - <Library 3 — e.g., scikit-learn>
-    - <Library 4 — e.g., matplotlib, seaborn, tqdm, colorama>
+    - Python >= 3.8
+    - requests
+    - colorama
+    - Logger (custom module)
+    - config, auth, api_client, account, trader modules
 
 Assumptions & Notes:
-    - <List any key assumptions — e.g., last column is the target variable.>
-    - <Mention data format — e.g., CSV files only.>
-    - <Mention platform or OS-specific notes — e.g., sound disabled on Windows.>
-    - <Note on output structure or reusability.>
+    - API credentials must be set as environment variables
+    - Bot runs continuously until stopped manually
+    - Only BTC trading is currently implemented
+    - Uses market orders for execution
 """
 
 import atexit  # For playing a sound when the program finishes
