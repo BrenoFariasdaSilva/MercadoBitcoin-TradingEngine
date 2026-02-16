@@ -1,6 +1,6 @@
 <div align="center">
   
-# [MercadoBitcoin-TradingEngine.](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine) <img src="https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/blob/main/.assets/Icons/Bitcoin.svg"  width="3%" height="3%">
+# [MercadoBitcoin-Trading Engine.](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine) <img src="https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/blob/main/.assets/Icons/Bitcoin.svg"  width="3%" height="3%">
 
 </div>
 
@@ -36,7 +36,7 @@ Project-Description.
 </div>
 
 ## Table of Contents
-- [MercadoBitcoin-TradingEngine. ](#mercadobitcoin-tradingengine-)
+- [MercadoBitcoin-Trading Engine. ](#mercadobitcoin-trading-engine-)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Requirements](#requirements)
