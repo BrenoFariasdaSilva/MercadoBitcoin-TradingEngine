@@ -71,6 +71,20 @@ class AccountManager:
         self.accounts_cache: Optional[List[Dict]] = None  # Cache for accounts list
 
 
+    def get_accounts(self) -> Optional[List[Dict]]:
+        """
+        Retrieves list of available accounts.
+        
+        :param: None
+        :return: List of account dictionaries or None if failed
+        """
+        
+        accounts = self.api_client.get_accounts()  # Request accounts from API
+        if accounts:  # Verify if accounts were retrieved
+            self.accounts_cache = accounts  # Cache accounts list
+        return accounts  # Return accounts list
+
+
     def get_account_id(self) -> Optional[str]:
         """
         Returns the account ID, selecting the first account if not set.
