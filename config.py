@@ -67,3 +67,17 @@ class TradingRules:
     BTC_SELL_THRESHOLD = 1.00  # 100% above average price (double) triggers sell
     BTC_SELL_AMOUNT = 0.20  # Sell 20% of BTC position
 
+
+class APIConfig:  # API configuration constants
+    """
+    API configuration for Mercado Bitcoin.
+    
+    :param: None
+    :return: None
+    """
+    
+    BASE_URL = "https://api.mercadobitcoin.net/api/v4"  # Base URL for API v4
+    TIMEOUT = 30  # Request timeout in seconds
+    MAX_RETRIES = 3  # Maximum number of retries for failed requests
+    RETRY_DELAY = 2  # Delay between retries in seconds
+
