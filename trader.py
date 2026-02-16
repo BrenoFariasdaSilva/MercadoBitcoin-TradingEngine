@@ -59,7 +59,8 @@ class TradingBot:
     :param: None
     :return: None
     """
-    
+
+
     def __init__(self, api_client, account_manager, config, logger=None):
         """
         Initializes the TradingBot.
@@ -78,6 +79,20 @@ class TradingBot:
         self.executed_rules: Set[str] = set()  # Track executed rules to prevent duplicates
         self.current_average_price: Optional[float] = None  # Cache current average price
         self.is_running = False  # Bot running state
+
+
+    def log(self, message: str) -> None:
+        """
+        Logs a message if logger is available.
+        
+        :param message: Message to log
+        :return: None
+        """
+        
+        if self.logger:  # Verify if logger exists
+            print(message)  # Print message (redirected to logger via stdout)
+        else:  # No logger available
+            print(message)  # Print to console
 
 
 def create_trading_bot(api_client, account_manager, config, logger=None) -> TradingBot:
