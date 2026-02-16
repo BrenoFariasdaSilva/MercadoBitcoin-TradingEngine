@@ -1,6 +1,6 @@
 <div align="center">
   
-# [MercadoBitcoin-TradingEngine.](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine) <img src="Icon-Image-URL"  width="3%" height="3%">
+# [MercadoBitcoin-TradingEngine.](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine) <img src="https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/blob/main/.assets/Icons/Bitcoin.svg"  width="3%" height="3%">
 
 </div>
 
