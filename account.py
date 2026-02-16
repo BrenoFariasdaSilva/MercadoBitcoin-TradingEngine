@@ -71,6 +71,25 @@ class AccountManager:
         self.accounts_cache: Optional[List[Dict]] = None  # Cache for accounts list
 
 
+    def get_account_id(self) -> Optional[str]:
+        """
+        Returns the account ID, selecting the first account if not set.
+        
+        :param: None
+        :return: Account ID string or None if no accounts available
+        """
+        
+        if self.account_id:  # Verify if account ID already set
+            return self.account_id  # Return cached account ID
+        
+        accounts = self.get_accounts()  # Get accounts list
+        if accounts and len(accounts) > 0:  # Verify if accounts exist
+            self.account_id = accounts[0].get("id")  # Set account ID from first account
+            return self.account_id  # Return account ID
+        
+        return None  # Return None if no accounts available
+
+
     def set_account_id(self, account_id: str) -> None:
         """
         Sets the account ID to use for operations.
