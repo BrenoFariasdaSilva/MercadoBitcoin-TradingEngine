@@ -81,3 +81,18 @@ class APIConfig:  # API configuration constants
     MAX_RETRIES = 3  # Maximum number of retries for failed requests
     RETRY_DELAY = 2  # Delay between retries in seconds
 
+
+class MonitoringConfig:  # Monitoring configuration constants
+    """
+    Monitoring and execution configuration.
+    
+    :param: None
+    :return: None
+    """
+    
+    VERIFICATION_INTERVAL = 60  # Interval in seconds between price verifications
+    SYMBOLS_TO_MONITOR = ["BTC-BRL", "BTC-USD"]  # List of trading pairs to monitor
+    PRIMARY_SYMBOL = "BTC-BRL"  # Primary symbol for trading operations
+    CRYPTO_SYMBOL = "BTC"  # Cryptocurrency symbol
+    FIAT_SYMBOL = "BRL"  # Fiat currency symbol
+
