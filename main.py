@@ -113,6 +113,36 @@ def verbose_output(true_string="", false_string=""):
         print(false_string)  # Output the false statement string
 
 
+def initialize_authenticator():
+    """
+    Initializes and validates the authenticator.
+
+    :param: None
+    :return: authenticator or None
+    """
+
+    print(
+        f"\n{BackgroundColors.GREEN}Initializing authenticator...{Style.RESET_ALL}"
+    )  # Output authentication initialization message
+
+    authenticator = create_authenticator(  # Create authenticator instance
+        Config.API_KEY,  # API key from config
+        Config.API_SECRET,  # API secret from config
+        Config.BASE_URL  # Base URL from config
+    )
+
+    if not authenticator.is_token_valid():  # Verify if authentication successful
+        print(
+            f"{BackgroundColors.RED}Authentication failed!{Style.RESET_ALL}"
+        )  # Output authentication failure
+        return None  # Exit if authentication failed
+
+    print(
+        f"{BackgroundColors.GREEN}Authentication successful!{Style.RESET_ALL}"
+    )  # Output authentication success
+    return authenticator
+
+
 def initialize_api_client(authenticator):
     """
     Initializes the API client.
