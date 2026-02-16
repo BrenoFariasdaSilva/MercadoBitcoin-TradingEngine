@@ -241,6 +241,39 @@ class APIClient:  # API client class for Mercado Bitcoin
         return self.make_request("GET", endpoint)  # Make GET request to order endpoint
 
 
+    def place_order(self, account_id: str, symbol: str, side: str, order_type: str, qty: Optional[str] = None, cost: Optional[float] = None, limit_price: Optional[float] = None) -> Optional[Dict]:
+        """
+        Places a new order.
+        
+        :param account_id: Account identifier
+        :param symbol: Trading pair symbol (e.g., BTC-BRL)
+        :param side: Order side (buy or sell)
+        :param order_type: Order type (market or limit)
+        :param qty: Order quantity (optional)
+        :param cost: Order cost in quote currency (optional)
+        :param limit_price: Limit price for limit orders (optional)
+        :return: Order placement response or None if failed
+        """
+        
+        endpoint = f"/accounts/{account_id}/{symbol}/orders"  # Construct endpoint path
+        
+        order_data = {  # Construct order data
+            "side": side,  # Order side
+            "type": order_type,  # Order type
+        }
+        
+        if qty is not None:  # Verify if quantity is provided
+            order_data["qty"] = qty  # Add quantity to order data
+        
+        if cost is not None:  # Verify if cost is provided
+            order_data["cost"] = str(cost)  # Add cost to order data as string
+        
+        if limit_price is not None:  # Verify if limit price is provided
+            order_data["limitPrice"] = str(limit_price)  # Add limit price to order data as string
+        
+        return self.make_request("POST", endpoint, data=order_data)  # Make POST request to place order
+
+
 def create_api_client(authenticator, base_url: str, timeout: int = 30, max_retries: int = 3, retry_delay: int = 2) -> APIClient:
     """
     Factory function to create an APIClient instance.
