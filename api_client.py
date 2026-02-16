@@ -78,6 +78,21 @@ class APIClient:  # API client class for Mercado Bitcoin
         self.retry_delay = retry_delay  # Store retry delay
 
 
+    def get_balances(self, account_id: str) -> Optional[List[Dict]]:
+        """
+        Retrieves balances for a specific account.
+        
+        :param account_id: Account identifier
+        :return: List of balance dictionaries or None if failed
+        """
+        
+        endpoint = f"/accounts/{account_id}/balances"  # Construct endpoint path
+        result = self.make_request("GET", endpoint)  # Make GET request to balances endpoint
+        if result and isinstance(result, list):  # Verify if result is a list
+            return result  # Return list of balances
+        return None  # Return None if not a list
+
+
     def get_accounts(self) -> Optional[List[Dict]]:
         """
         Retrieves list of accounts.
