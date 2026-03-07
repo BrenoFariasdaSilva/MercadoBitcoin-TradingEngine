@@ -17,9 +17,9 @@ This repository implements a lightweight, rule-based automated trading engine fo
 <div align="center">
 
 ![GitHub Code Size in Bytes](https://img.shields.io/github/languages/code-size/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
-![GitHub Commits](https://img.shields.io/github/commit-activity/t/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine/main)
+![GitHub Commits](https://img.shields.io/github/commit-activity/t/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/main)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
-![GitHub Forks](https://img.shields.io/github/forks/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Forks](https://img.shields.io/github/forks/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
 ![GitHub Language Count](https://img.shields.io/github/languages/count/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
 ![GitHub License](https://img.shields.io/github/license/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
 ![GitHub Stars](https://img.shields.io/github/stars/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
@@ -177,7 +177,7 @@ Module documentation (responsibilities, exported classes and public functions, i
 1. Clone the repository with the following command:
 
    ```bash
-   git clone https://github.com/BrenoFariasDaSilva/MercadoBitcoin-TradingEngine.git
+   git clone https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine.git
    cd MercadoBitcoin-TradingEngine
    ```
 
