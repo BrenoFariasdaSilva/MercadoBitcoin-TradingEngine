@@ -30,10 +30,30 @@ This repository implements a lightweight, rule-based automated trading engine fo
 </div>
 
 <div align="center">
-  
-![RepoBeats Statistics](https://repobeats.axiom.co/api/embed/7be789b2f02db4e7c76ee626ed7d577423834a01.svg "Repobeats analytics image")
+
+![GitHub Code Size in Bytes](https://img.shields.io/github/languages/code-size/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Commits](https://img.shields.io/github/commit-activity/t/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/main)
+![GitHub Last Commit](https://img.shields.io/github/last-commit/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Forks](https://img.shields.io/github/forks/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Language Count](https://img.shields.io/github/languages/count/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub License](https://img.shields.io/github/license/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Stars](https://img.shields.io/github/stars/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Contributors](https://img.shields.io/github/contributors/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![GitHub Created At](https://img.shields.io/github/created-at/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+![wakatime](https://wakatime.com/badge/github/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine.svg)
+[![GitHub Repository Size](https://img.shields.io/github/repo-size/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
+[![Open Issues](https://img.shields.io/github/issues/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/issues)
+[![Closed Issues](https://img.shields.io/github/issues-closed/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/issues?q=is%3Aissue+is%3Aclosed)
+[![Open Pull Requests](https://img.shields.io/github/issues-pr/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/pulls)
+[![Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/pulls?q=is%3Apr+is%3Aclosed)
+[![Monthly Commits](https://img.shields.io/github/commit-activity/m/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/main)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/commits)
+[![Merged PRs](https://img.shields.io/github/issues-search/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine?query=is%3Apr%20is%3Amerged&label=merged%20PRs&color=blue)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/pulls?q=is%3Apr+is%3Amerged)
+![GitHub Primary Language](https://img.shields.io/badge/language-Python-3b82f6)
+
+![Repobeats Statistics](https://repobeats.axiom.co/api/embed/7be789b2f02db4e7c76ee626ed7d577423834a01.svg)
 
 </div>
+
 
 ## Table of Contents
 - [MercadoBitcoin-Trading Engine. ](#mercadobitcoin-trading-engine-)
