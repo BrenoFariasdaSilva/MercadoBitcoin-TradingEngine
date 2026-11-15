@@ -26,7 +26,6 @@ This repository implements a lightweight, rule-based automated trading engine fo
 ![GitHub Contributors](https://img.shields.io/github/contributors/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
 ![GitHub Created At](https://img.shields.io/github/created-at/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
 ![wakatime](https://wakatime.com/badge/github/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine.svg)
-[![GitHub Repository Size](https://img.shields.io/github/repo-size/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)
 [![Open Issues](https://img.shields.io/github/issues/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/issues?q=is%3Aissue+is%3Aclosed)
 [![Open Pull Requests](https://img.shields.io/github/issues-pr/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine)](https://github.com/BrenoFariasdaSilva/MercadoBitcoin-TradingEngine/pulls)
